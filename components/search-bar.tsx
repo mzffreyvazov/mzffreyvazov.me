@@ -44,7 +44,7 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
       <input
         ref={searchInputRef}
         type="text"
-        placeholder="search thoughts..."
+        placeholder="search muzeffer's thoughts..."
         value={searchQuery}
         onChange={(e) => handleSearch(e.target.value)}
         className="w-full pl-10 pr-4 py-2 text-sm border-none border-b border-gray-200 focus:border-gray-400 focus:outline-none focus:ring-0 bg-transparent"

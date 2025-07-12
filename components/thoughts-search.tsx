@@ -59,7 +59,7 @@ export default function ThoughtsSearch({ articles }: ThoughtsSearchProps) {
         <input
           ref={searchInputRef}
           type="text"
-          placeholder="search thoughts..."
+          placeholder="search muzeffer's thoughts..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           className="w-full pl-10 pr-4 py-3 border-none focus:outline-none focus:ring-0 bg-transparent text-gray-700 placeholder-gray-400 text-sm"
