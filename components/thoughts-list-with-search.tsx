@@ -12,6 +12,7 @@ interface SearchItem {
   description?: string
   tags?: string[]
   sort: number
+  hidden?: boolean
 }
 
 interface SearchBarWrapperProps {

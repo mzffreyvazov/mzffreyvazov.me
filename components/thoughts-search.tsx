@@ -10,6 +10,7 @@ interface Article {
   description: string
   sort: number
   tags?: string[]
+  hidden?: boolean
 }
 
 interface ThoughtsSearchProps {

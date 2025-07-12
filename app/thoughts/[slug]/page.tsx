@@ -50,13 +50,23 @@ export async function generateStaticParams() {
     path.join(process.cwd(), 'app', 'thoughts', '_articles')
   )
 
-  return articles
-    .filter((name) => name.endsWith('.mdx'))
-    .map((name) => ({
+  const params = []
+  
+  for (const name of articles) {
+    if (!name.endsWith('.mdx')) continue
+    
+    // Check if the article is hidden
+    const { metadata } = await import('../_articles/' + name)
+    if (metadata.hidden === true) continue
+    
+    params.push({
       params: {
         slug: name.replace(/\.mdx$/, ''),
       },
-    }))
+    })
+  }
+  
+  return params
 }
 
 export async function generateMetadata(props: {

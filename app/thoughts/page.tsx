@@ -24,6 +24,9 @@ export default async function Page() {
 
     if (!module.metadata) throw new Error('Missing `metadata` in ' + article)
 
+    // Skip hidden articles
+    if (module.metadata.hidden === true) continue
+
     items.push({
       slug: article.replace(/\.mdx$/, ''),
       title: module.metadata.title,
@@ -31,6 +34,7 @@ export default async function Page() {
       description: module.metadata.description || '',
       tags: module.metadata.tags || [],
       sort: Number(module.metadata.date?.replaceAll('.', '') || 0),
+      hidden: module.metadata.hidden || false
     })
   }
   items.sort((a, b) => b.sort - a.sort)
