@@ -33,8 +33,8 @@ importers:
         specifier: ^2.1.0
         version: 2.1.1
       katex:
-        specifier: ^0.16.11
-        version: 0.16.11
+        specifier: ^0.16.12
+        version: 0.16.22
       next:
         specifier: 15.3.0-canary.19
         version: 15.3.0-canary.19(react-dom@0.0.0-experimental-e1e74071-20250321(react@0.0.0-experimental-e1e74071-20250321))(react@0.0.0-experimental-e1e74071-20250321)
@@ -938,8 +938,8 @@ packages:
   json-schema-traverse@0.4.1:
     resolution: {integrity: sha512-xbbCH5dCYU5T8LcEhhuh7HJ88HXuW3qsI3Y0zOZFKfZEHcpWiHU/Jxzk629Brsab/mMiHQti9wMP+845RPe3Vg==}
 
-  katex@0.16.11:
-    resolution: {integrity: sha512-RQrI8rlHY92OLf3rho/Ts8i/XvjgguEjOkO1BEXcU3N8BqPpSzBNwV/G0Ukr+P/l3ivvJUE/Fa/CwbS6HesGNQ==}
+  katex@0.16.22:
+    resolution: {integrity: sha512-XCHRdUw4lf3SKBaJe4EvgqIuWwkPSo9XoeO8GjQW94Bp7TWv9hNhzZjZ+OH9yf1UmLygb7DIT5GSFQiyt16zYg==}
     hasBin: true
 
   kleur@4.1.5:
@@ -2563,7 +2563,7 @@ snapshots:
 
   json-schema-traverse@0.4.1: {}
 
-  katex@0.16.11:
+  katex@0.16.22:
     dependencies:
       commander: 8.3.0
 
@@ -3483,7 +3483,7 @@ snapshots:
 
   react-katex@3.0.1(prop-types@15.8.1)(react@0.0.0-experimental-e1e74071-20250321):
     dependencies:
-      katex: 0.16.11
+      katex: 0.16.22
       prop-types: 15.8.1
       react: 0.0.0-experimental-e1e74071-20250321
 
