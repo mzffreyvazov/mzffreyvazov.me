@@ -52,7 +52,7 @@ function ThoughtsListContent({ items }: SearchBarWrapperProps) {
     
     // Check if the search is a tag-specific search
     if (query.toLowerCase().startsWith('topic:')) {
-      const tagQuery = query.substring(4).trim().toLowerCase()
+      const tagQuery = query.substring(6).trim().toLowerCase()
       if (tagQuery) {
         const filtered = items.filter((item: SearchItem) => 
           item.tags && item.tags.some(tag => tag.toLowerCase().includes(tagQuery))
@@ -64,12 +64,11 @@ function ThoughtsListContent({ items }: SearchBarWrapperProps) {
       return
     }
     
-    // Regular search
+    // Regular search - don't include tag search here
     const searchTerm = query.toLowerCase()
     const filtered = items.filter((item: SearchItem) => 
       item.title.toLowerCase().includes(searchTerm) || 
-      (item.description && item.description.toLowerCase().includes(searchTerm)) ||
-      (item.tags && item.tags.some((tag: string) => tag.toLowerCase().includes(searchTerm)))
+      (item.description && item.description.toLowerCase().includes(searchTerm))
     )
     setFilteredItems(filtered)
   }
@@ -100,7 +99,7 @@ function ThoughtsListContent({ items }: SearchBarWrapperProps) {
         <div className="mb-4 flex items-center gap-2">
           <span className="text-sm text-rurikon-400">Searching by topic:</span>
           <span className="text-xs text-rurikon-500 border-b border-rurikon-200">
-            {searchQuery.substring(4).trim()}
+            {searchQuery.substring(6).trim()}
           </span>
         </div>
       )}
