@@ -1,5 +1,6 @@
 import { promises as fs } from 'fs'
 import path from 'path'
+import Link from 'next/link'
 import cn from 'clsx'
 
 export default async function Page(props: {
@@ -19,6 +20,20 @@ export default async function Page(props: {
         className={cn(metadata.chinese && 'text-justify font-zh')}
         lang={metadata.chinese ? 'zh-Hans' : 'en'}
       >
+        {metadata.tags && metadata.tags.length > 0 && (
+          <div className="flex flex-wrap gap-1.5 mb-4">
+            <span className="text-sm text-rurikon-300 mr-0 self-center">topics:</span>
+            {metadata.tags.map((tag: string) => (
+              <Link 
+                key={tag} 
+                href={`/thoughts?tag=${encodeURIComponent(tag)}`}
+                className="text-sm text-rurikon-500 hover:text-rurikon-700 border-b border-rurikon-200 hover:border-rurikon-400 transition-colors"
+              >
+                {tag}
+              </Link>
+            ))}
+          </div>
+        )}
         <MDXContent />
       </div>
     )
