@@ -33,6 +33,7 @@ export const metadata: Metadata = {
     template: '%s - Shu Ding',
     default: 'Shu Ding',
   },
+
 }
 
 export const viewport: Viewport = {

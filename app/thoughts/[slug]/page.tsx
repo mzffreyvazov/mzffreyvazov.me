@@ -8,18 +8,24 @@ export default async function Page(props: {
   }>
 }) {
   const params = await props.params
-  const { default: MDXContent, metadata } = await import(
-    '../_articles/' + `${params.slug}.mdx`
-  )
+  
+  try {
+    const { default: MDXContent, metadata } = await import(
+      '../_articles/' + `${params.slug}.mdx`
+    )
 
-  return (
-    <div
-      className={cn(metadata.chinese && 'text-justify font-zh')}
-      lang={metadata.chinese ? 'zh-Hans' : 'en'}
-    >
-      <MDXContent />
-    </div>
-  )
+    return (
+      <div
+        className={cn(metadata.chinese && 'text-justify font-zh')}
+        lang={metadata.chinese ? 'zh-Hans' : 'en'}
+      >
+        <MDXContent />
+      </div>
+    )
+  } catch (error) {
+    // If the article file doesn't exist, show 404
+    throw new Error(`Article not found: ${params.slug}`)
+  }
 }
 
 export async function generateStaticParams() {
@@ -42,10 +48,19 @@ export async function generateMetadata(props: {
   }>
 }) {
   const params = await props.params
-  const metadata = (await import('../_articles/' + `${params.slug}.mdx`))
-    .metadata
-  return {
-    title: metadata.title,
-    description: metadata.description,
+  
+  try {
+    const metadata = (await import('../_articles/' + `${params.slug}.mdx`))
+      .metadata
+    return {
+      title: metadata.title,
+      description: metadata.description,
+    }
+  } catch (error) {
+    // Return default metadata if file doesn't exist
+    return {
+      title: 'Article Not Found',
+      description: 'The requested article could not be found.',
+    }
   }
 }
