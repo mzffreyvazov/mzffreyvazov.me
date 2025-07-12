@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import SearchBar from '@/components/search-bar'
@@ -18,7 +18,8 @@ interface SearchBarWrapperProps {
   items: SearchItem[]
 }
 
-export default function SearchBarWrapper({ items }: SearchBarWrapperProps) {
+// Create a client component that uses useSearchParams
+function ThoughtsListContent({ items }: SearchBarWrapperProps) {
   const searchParams = useSearchParams()
   const router = useRouter()
   const tagParam = searchParams.get('tag')
@@ -146,5 +147,14 @@ export default function SearchBarWrapper({ items }: SearchBarWrapperProps) {
         </ul>
       )}
     </>
+  )
+}
+
+// Export a wrapper component that uses Suspense
+export default function SearchBarWrapper({ items }: SearchBarWrapperProps) {
+  return (
+    <Suspense fallback={<div className="text-center py-8">Loading thoughts...</div>}>
+      <ThoughtsListContent items={items} />
+    </Suspense>
   )
 }
