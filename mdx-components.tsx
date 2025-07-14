@@ -76,17 +76,17 @@ export const components: Record<string, FC<any>> = {
   ),
   ul: (props) => (
     <ul
-      className='mt-7 list-disc list-outside marker:text-rurikon-200 pl-5'
+      className='mt-2 space-y-2 list-disc list-outside marker:text-rurikon-200 pl-5 [&_ul]:mb-4 [&_ol]:mb-3'
       {...props}
     />
   ),
   ol: (props) => (
     <ol
-      className='mt-7 list-decimal list-outside marker:text-rurikon-200 pl-5'
+      className='mt-2 space-y-2 list-decimal list-outside marker:text-rurikon-200 pl-5 [&_ul]:mb-4 [&_ol]:mb-3'
       {...props}
     />
   ),
-  li: (props) => <li className='pl-1.5' {...props} />,
+  li: (props) => <li className='pl-1 leading-relaxed [&:has(ul)]:mb-2 [&:has(ol)]:mb-2' {...props} />,
   a: ({ href, ...props }) => {
     return (
       <Link
@@ -104,7 +104,7 @@ export const components: Record<string, FC<any>> = {
     )
   },
   strong: (props) => <strong className='font-bold' {...props} />,
-  p: (props) => <p className='mt-7' {...props} />,
+  p: (props) => <p className='mt-6' {...props} />,
   blockquote: (props) => (
     <blockquote
       className='pl-6 -ml-6 sm:pl-10 sm:-ml-10 md:pl-14 md:-ml-14 not-mobile:text-rurikon-400'
