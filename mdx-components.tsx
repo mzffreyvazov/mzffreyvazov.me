@@ -1,5 +1,7 @@
+// mdx-components.tsx
 import type { MDXComponents } from 'mdx/types'
-import type { FC } from 'react'
+import type { FC, ReactNode } from 'react'
+import React from 'react'
 import { codeToHtml, createCssVariablesTheme } from 'shiki'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -12,21 +14,48 @@ import { BlockSideTitle } from '@/components/block-sidetitle'
 
 const cssVariablesTheme = createCssVariablesTheme({})
 
+// Helper function to generate a URL-friendly "slug" from a string
+const slugify = (text: ReactNode): string => {
+  let str = ''
+  // Recursively extract text from children
+  const extractText = (children: ReactNode) => {
+    React.Children.forEach(children, (child) => {
+      if (typeof child === 'string') {
+        str += child
+      } else if (React.isValidElement(child) && child.props.children) {
+        extractText(child.props.children)
+      }
+    })
+  }
+  extractText(text)
+
+  return str
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-') // Replace spaces with -
+    .replace(/[^\w\-]+/g, '') // Remove all non-word characters
+    .replace(/\-\-+/g, '-') // Replace multiple - with single -
+}
+
 export const components: Record<string, FC<any>> = {
   h1: (props) => (
     <h1
+      id={slugify(props.children)}
       className='font-semibold mb-7 text-rurikon-600 text-balance'
       {...props}
     />
   ),
   h2: (props) => (
     <h2
+      id={slugify(props.children)}
       className='font-semibold mt-14 mb-7 text-rurikon-600 text-balance'
       {...props}
     />
   ),
   h3: (props) => (
     <h3
+      id={slugify(props.children)}
       className='font-semibold mt-14 mb-7 text-rurikon-600 text-balance'
       {...props}
     />
@@ -76,12 +105,8 @@ export const components: Record<string, FC<any>> = {
       const code = await codeToHtml(props.children, {
         lang: 'jsx',
         theme: cssVariablesTheme,
-        // theme: 'min-light',
-        // theme: 'snazzy-light',
         transformers: [
           {
-            // Since we're using dangerouslySetInnerHTML, the code and pre
-            // tags should be removed.
             pre: (hast) => {
               if (hast.children.length !== 1) {
                 throw new Error('<pre>: Expected a single <code> child')
