@@ -34,6 +34,8 @@ export default function TableOfContents() {
   const tocRef = useRef<HTMLElement>(null)
   const [progressHeight, setProgressHeight] = useState(0)
   const [tocItemPositions, setTocItemPositions] = useState<number[]>([])
+  const [dynamicTopPosition, setDynamicTopPosition] = useState(192) // Default to top-48 (192px)
+  const [useDynamicPositioning, setUseDynamicPositioning] = useState(false)
 
   // Effect to find all headers and calculate content heights
   useEffect(() => {
@@ -87,7 +89,8 @@ export default function TableOfContents() {
       let currentY = 8 // Starting position (top padding)
 
       // Get available viewport height for TOC
-      const availableHeight = window.innerHeight - 200 // Account for sticky positioning and margins
+      const viewportHeight = window.innerHeight
+      const availableHeight = viewportHeight - 200 // Account for sticky positioning and margins
       const totalItems = headers.length
       
       // Calculate maximum allowed spacing to fit all items
@@ -99,9 +102,9 @@ export default function TableOfContents() {
       const maxContentHeight = Math.max(...rawHeights)
       
       // Much more compact spacing ranges
-      const minSpacing = Math.min(25, maxAllowedSpacing * 0.6) // Increase from 15 to 20
-      const maxSpacing = Math.min(45, maxAllowedSpacing) // Increase from 35 to 45
-      const baseSpacing = Math.min(30, maxAllowedSpacing * 0.8) // Increase from 22 to 30
+      const minSpacing = Math.min(25, maxAllowedSpacing * 0.6)
+      const maxSpacing = Math.min(45, maxAllowedSpacing)
+      const baseSpacing = Math.min(30, maxAllowedSpacing * 0.8)
       
       headers.forEach((header, index) => {
         positions.push(currentY)
@@ -113,7 +116,7 @@ export default function TableOfContents() {
             : (header.contentHeight - minContentHeight) / (maxContentHeight - minContentHeight)
           
           // Apply stronger dampening to keep spacing more uniform
-          const dampened = Math.pow(normalizedHeight, 0.8) // More aggressive dampening
+          const dampened = Math.pow(normalizedHeight, 0.8)
           
           // Calculate final spacing
           const proportionalHeight = baseSpacing + (dampened * (maxSpacing - minSpacing))
@@ -124,11 +127,56 @@ export default function TableOfContents() {
       })
 
       setTocItemPositions(positions)
+
+      // Calculate total TOC content height
+      const totalTocContentHeight = positions.length > 0 
+        ? (positions[positions.length - 1] - positions[0] + 32) // Add padding for first and last items
+        : 40
+
+      // Define height threshold - use dynamic positioning if TOC is too tall
+      const heightThreshold = viewportHeight * 0.6 // 60% of viewport height
+      const shouldUseDynamic = totalTocContentHeight > heightThreshold
+
+      setUseDynamicPositioning(shouldUseDynamic)
+
+      if (shouldUseDynamic) {
+        // Calculate optimal top position to center the TOC content
+        const minTopMargin = 120 // Minimum distance from top of viewport
+        const bottomMargin = 80 // Minimum distance from bottom of viewport
+        const centerPoint = viewportHeight / 2
+        const idealTopPosition = centerPoint - (totalTocContentHeight / 2)
+        
+        // Apply constraints with more balanced bounds
+        const minTopPosition = minTopMargin
+        const maxTopPosition = viewportHeight - totalTocContentHeight - bottomMargin
+        
+        // Ensure we don't go below minimum or above maximum
+        const balancedTopPosition = Math.max(
+          minTopPosition,
+          Math.min(maxTopPosition, idealTopPosition)
+        )
+
+        setDynamicTopPosition(balancedTopPosition)
+      } else {
+        // Use original fixed positioning
+        setDynamicTopPosition(192) // top-48 equivalent
+      }
     }
 
     // Use a small delay to ensure DOM is fully rendered
     const timeoutId = setTimeout(calculateTocPositions, 50)
-    return () => clearTimeout(timeoutId)
+    
+    // Recalculate on window resize
+    const handleResize = () => {
+      setTimeout(calculateTocPositions, 100)
+    }
+    
+    window.addEventListener('resize', handleResize)
+    
+    return () => {
+      clearTimeout(timeoutId)
+      window.removeEventListener('resize', handleResize)
+    }
   }, [headers])
 
   // Handle scroll events for active state and progress
@@ -228,7 +276,10 @@ export default function TableOfContents() {
 
   return (
     <aside className="absolute top-0 left-full h-full hidden lg:block">
-      <div className="sticky top-48 ml-35 w-64">
+      <div 
+        className={cn("sticky ml-35 w-64", !useDynamicPositioning && "top-48")}
+        style={useDynamicPositioning ? { top: `${dynamicTopPosition}px` } : undefined}
+      >
         <nav ref={tocRef} className="relative">
 
 
