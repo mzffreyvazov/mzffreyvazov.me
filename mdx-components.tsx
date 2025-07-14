@@ -60,6 +60,13 @@ export const components: Record<string, FC<any>> = {
       {...props}
     />
   ),
+  h4: (props) => (
+    <h4
+      id={slugify(props.children)}
+      className='font-semibold mt-12 mb-6 text-rurikon-600 text-balance'
+      {...props}
+    />
+  ),
   ul: (props) => (
     <ul
       className='mt-7 list-disc list-outside marker:text-rurikon-200 pl-5'

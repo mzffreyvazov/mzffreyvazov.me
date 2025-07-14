@@ -39,20 +39,33 @@ export default function TableOfContents() {
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       const headingElements = Array.from(
-        document.querySelectorAll('article h1, article h2, article h3')
+        document.querySelectorAll('article h1, article h2, article h3, article h4, article h5, article h6')
       ) as HTMLElement[]
 
-      const mappedHeaders = headingElements
+      // Filter out the first h1 (note title) and map remaining headers
+      const filteredHeaders = headingElements.filter((el, index) => {
+        // Skip the first h1 element
+        if (el.tagName === 'H1' && index === 0) {
+          return false
+        }
+        return true
+      })
+
+      const mappedHeaders = filteredHeaders
         .map((el, index) => {
-          const nextHeader = headingElements[index + 1]
+          const nextHeader = filteredHeaders[index + 1]
           const contentHeight = nextHeader 
             ? nextHeader.offsetTop - el.offsetTop
             : Math.max(200, document.body.scrollHeight - el.offsetTop) // Default height for last section
 
+          // Adjust level mapping: h2 -> 1, h3 -> 2, h4 -> 3, etc.
+          const originalLevel = Number(el.tagName.substring(1))
+          const adjustedLevel = originalLevel - 1
+
           return {
             id: el.id,
             text: el.innerText,
-            level: Number(el.tagName.substring(1)),
+            level: adjustedLevel,
             top: el.offsetTop,
             contentHeight,
           }
@@ -275,7 +288,7 @@ export default function TableOfContents() {
                           : 'text-rurikon-400 group-hover:text-rurikon-700'
                       )}
                       style={{
-                        paddingLeft: `${0.5 + (header.level - 1) * 1.25}rem`, // Increase base spacing from 1 to 1.5
+                        paddingLeft: `${1.8 + (header.level - 1) * 1.25}rem`, // Increase base spacing from 0.5 to 1.5 for better timeline separation
                       }}
                     >
                       {header.text}
