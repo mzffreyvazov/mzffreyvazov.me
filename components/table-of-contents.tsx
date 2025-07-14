@@ -218,12 +218,13 @@ export default function TableOfContents() {
       <div className="sticky top-48 ml-35 w-64">
         <nav ref={tocRef} className="relative">
 
+
           {/* Background timeline track */}
           <div
             className="absolute left-[3.5px] w-px bg-rurikon-100"
             style={{ 
               top: `${(tocItemPositions[0] || 8) - 4}px`, // Start 4px ABOVE first dot
-              height: `${(tocItemPositions[tocItemPositions.length - 1] || 0) - (tocItemPositions[0] || 0) + 8}px` // 4px above first + 4px below last = 8px total
+              height: `${tocItemPositions.length > 0 ? (tocItemPositions[tocItemPositions.length - 1] - tocItemPositions[0] + 12) : 8}px` // Distance between first and last dot + 12px (4px before + 4px after + 4px dot radius)
             }}
             aria-hidden="true"
           />
