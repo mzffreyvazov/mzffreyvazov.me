@@ -277,7 +277,7 @@ export default function TableOfContents() {
   return (
     <aside className="absolute top-0 left-full h-full hidden lg:block">
       <div 
-        className={cn("sticky ml-42 w-64", !useDynamicPositioning && "top-48")}
+        className={cn("sticky ml-46 w-64", !useDynamicPositioning && "top-48")}
         style={useDynamicPositioning ? { top: `${dynamicTopPosition}px` } : undefined}
       >
         <nav ref={tocRef} className="relative">
