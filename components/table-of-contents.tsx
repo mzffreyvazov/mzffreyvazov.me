@@ -281,14 +281,12 @@ export default function TableOfContents() {
         style={useDynamicPositioning ? { top: `${dynamicTopPosition}px` } : undefined}
       >
         <nav ref={tocRef} className="relative">
-
-
           {/* Background timeline track */}
           <div
             className="absolute left-[3.5px] w-px bg-rurikon-100"
             style={{ 
-              top: `${(tocItemPositions[0] || 8) - 4}px`, // Start 4px ABOVE first dot
-              height: `${tocItemPositions.length > 0 ? (tocItemPositions[tocItemPositions.length - 1] - tocItemPositions[0] + 12) : 8}px` // Distance between first and last dot + 12px (4px before + 4px after + 4px dot radius)
+              top: `${(tocItemPositions[0] || 8) - 4}px`,
+              height: `${tocItemPositions.length > 0 ? (tocItemPositions[tocItemPositions.length - 1] - tocItemPositions[0] + 12) : 8}px`
             }}
             aria-hidden="true"
           />
@@ -297,8 +295,8 @@ export default function TableOfContents() {
           <div
             className="absolute left-[3.5px] w-px bg-rurikon-800"
             style={{ 
-              top: `${(tocItemPositions[0] || 8) - 4}px`, // Match background timeline start
-              height: `${progressHeight - (tocItemPositions[0] || 8) + 4}px` // Account for starting 4px above
+              top: `${(tocItemPositions[0] || 8) - 4}px`,
+              height: `${progressHeight - (tocItemPositions[0] || 8) + 4}px`
             }}
             aria-hidden="true"
           />

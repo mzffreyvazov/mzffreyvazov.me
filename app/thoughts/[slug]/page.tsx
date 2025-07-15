@@ -5,6 +5,7 @@ import React, { Fragment } from 'react'
 import Link from 'next/link'
 import cn from 'clsx'
 import TableOfContents from '@/components/table-of-contents'
+import MobileTableOfContents from '@/components/mobile-table-of-contents'
 
 export default async function Page(props: {
   params: Promise<{
@@ -42,6 +43,7 @@ export default async function Page(props: {
           <MDXContent />
         </div>
         <TableOfContents />
+        <MobileTableOfContents />
       </div>
     )
   } catch (error) {

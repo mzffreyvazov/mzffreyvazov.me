@@ -275,3 +275,22 @@ article {
     filter: blur(0);
   }
 }
+
+/* Mobile TOC specific styles */
+@media (max-width: 1023px) {
+  body {
+    padding-bottom: 6rem; /* Add bottom padding to account for floating button */
+  }
+}
+
+/* Ensure mobile TOC slides smoothly */
+@media (max-width: 1023px) {
+  .mobile-toc-panel {
+    transform: translateY(100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .mobile-toc-panel.open {
+    transform: translateY(0);
+  }
+}
