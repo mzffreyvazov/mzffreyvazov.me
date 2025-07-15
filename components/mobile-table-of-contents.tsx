@@ -153,7 +153,13 @@ export default function MobileTableOfContents() {
           >
             {/* Header */}
             <div className="flex items-center justify-between p-4 border-b border-rurikon-100">
-              <h3 className="text-base font-semibold text-rurikon-800">
+              <h3 
+                className="text-base font-bold text-rurikon-800"
+                style={{
+                  fontVariationSettings: '"wght" 700, "opsz" 32',
+                  fontFeatureSettings: '"cpsp" 1, "cv01", "cv03", "cv04", "calt", "ss03", "liga", "ordn"'
+                }}
+              >
                 Contents
               </h3>
               <button
