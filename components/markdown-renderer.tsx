@@ -179,13 +179,21 @@ export default function MarkdownRenderer({ children }: MarkdownRendererProps) {
     ),
     code: ({ className, children, ...props }: any) => {
       const match = /language-(\w+)/.exec(className || '')
+      const language = match ? match[1] : ''
 
       if (typeof children === 'string' && match) {
-        // This is a code block
+        // This is a code block with enhanced styling
         return (
           <div className="mt-7">
-            <pre className="bg-gray-950 text-gray-50 p-4 rounded-lg overflow-x-auto">
-              <code className={className} {...props}>
+            <pre className="p-4 overflow-x-auto text-sm leading-relaxed text-black">
+              <code 
+                className={`${className} text-black font-mono block`}
+                style={{
+                  fontFamily: 'ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace',
+                  color: '#000000'
+                }}
+                {...props}
+              >
                 {children}
               </code>
             </pre>
@@ -194,7 +202,7 @@ export default function MarkdownRenderer({ children }: MarkdownRendererProps) {
       }
 
       // This is inline code
-      return <code className='inline bg-rurikon-50 px-1 rounded text-sm' {...props}>{children}</code>
+      return <code className='inline bg-rurikon-50 px-1 rounded text-sm font-mono' {...props}>{children}</code>
     },
     img: ({ src, alt, title }: any) => {
       let img: React.ReactNode

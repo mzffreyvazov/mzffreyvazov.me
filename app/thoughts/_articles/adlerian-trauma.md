@@ -3,6 +3,7 @@ title: 'Travma, Həyat Tərzi və Cəsarət'
 date: '2025.07.12'
 description: ''
 tags: ['psychology', 'adlerian-psychology', 'philosophy']
+hidden: false
 ---
 
 # Adlerian Psixologiya: Travma, Həyat Tərzi və Cəsarət
