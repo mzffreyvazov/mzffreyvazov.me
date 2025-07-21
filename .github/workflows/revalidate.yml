@@ -1,0 +1,78 @@
+name: Revalidate Changed Articles
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'app/thoughts/_articles/**/*.md'
+      - 'app/thoughts/_articles/**/*.mdx'
+      - 'app/projects/**/*.mdx'
+      - 'app/**/*.mdx'
+
+jobs:
+  revalidate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v41
+        with:
+          files: |
+            app/thoughts/_articles/**/*.{md,mdx}
+            app/projects/**/*.{md,mdx}
+            app/**/*.mdx
+
+      - name: Process changed files and revalidate
+        if: steps.changed-files.outputs.any_changed == 'true'
+        env:
+          REVALIDATION_TOKEN: ${{ secrets.REVALIDATION_TOKEN }}
+          VERCEL_DOMAIN: ${{ secrets.VERCEL_DOMAIN }}
+        run: |
+          changed_files="${{ steps.changed-files.outputs.all_changed_files }}"
+          paths_to_revalidate=""
+          
+          for file in $changed_files; do
+            echo "Processing: $file"
+            
+            # Handle article files
+            if [[ $file == app/thoughts/_articles/* ]]; then
+              # Extract slug from filename
+              filename=$(basename "$file")
+              slug="${filename%.*}"  # Remove extension
+              paths_to_revalidate="$paths_to_revalidate,\"/thoughts/$slug\""
+            fi
+            
+            # Handle project files
+            if [[ $file == app/projects/* ]]; then
+              paths_to_revalidate="$paths_to_revalidate,\"/projects\""
+            fi
+            
+            # Handle other MDX files
+            if [[ $file == app/*.mdx ]]; then
+              # Convert file path to URL path
+              url_path="${file#app}"
+              url_path="${url_path%.mdx}"
+              paths_to_revalidate="$paths_to_revalidate,\"$url_path\""
+            fi
+          done
+          
+          # Always revalidate the thoughts index page if articles changed
+          if [[ $changed_files == *"app/thoughts/_articles"* ]]; then
+            paths_to_revalidate="$paths_to_revalidate,\"/thoughts\""
+          fi
+          
+          # Remove leading comma and format as JSON array
+          paths_to_revalidate="[${paths_to_revalidate#,}]"
+          
+          echo "Paths to revalidate: $paths_to_revalidate"
+          
+          # Make revalidation request
+          curl -X POST "https://$VERCEL_DOMAIN/api/revalidate" \
+            -H "Authorization: Bearer $REVALIDATION_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "{\"paths\": $paths_to_revalidate}"

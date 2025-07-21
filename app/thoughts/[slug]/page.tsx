@@ -10,6 +10,9 @@ import MobileTableOfContents from '@/components/mobile-table-of-contents'
 import MarkdownRenderer from '@/components/markdown-renderer'
 import { parseMarkdown } from '@/lib/markdown'
 
+// Enable ISR with 1 hour revalidation, but can be overridden by on-demand revalidation
+export const revalidate = 3600
+
 export default async function Page(props: {
   params: Promise<{
     slug: string
