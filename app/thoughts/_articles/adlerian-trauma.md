@@ -8,7 +8,6 @@ tags:
   - philosophy
 hidden: false
 ---
-
 # Adlerian Psixologiya: Travma, Həyat Tərzi və Cəsarət
 
 > **Sual**: Çox vaxt insanın davranışlarını travmalarla, genetikayla, yaşadığı mühitlə izah edirik. Pis bir şey edənə 'uşaqlığı çətin olub'  'travmaları çoxdu' 'ailəsindən belə öyrənib' deyirik. Amma bəs iradə? Əgər hər şey keçmişin nəticəsidirsə, insanın seçimi, dəyişmək gücü nə olur? Sizcə, iradənin nə qədər rolu var?
