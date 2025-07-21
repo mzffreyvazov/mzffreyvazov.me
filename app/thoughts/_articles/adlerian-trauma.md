@@ -12,6 +12,8 @@ hidden: false
 
 > **Sual**: Çox vaxt insanın davranışlarını travmalarla, genetikayla, yaşadığı mühitlə izah edirik. Pis bir şey edənə 'uşaqlığı çətin olub'  'travmaları çoxdu' 'ailəsindən belə öyrənib' deyirik. Amma bəs iradə? Əgər hər şey keçmişin nəticəsidirsə, insanın seçimi, dəyişmək gücü nə olur? Sizcə, iradənin nə qədər rolu var?
 
+Hellooooo
+
 Adlerin psixologiyasında travma qəti şəkildə inkar edilir. Freud'un ideyası bu idi ki, insanın psixi yaraları (psychic wounds), yəni travmaları onun indiki bədbəxtliyini, xoşbəxt olmamağını izah edir, yəni arada səbəb-nəticə əlaqəsi olduğunu göstərib. Adler isə bunla razılaşmayıb. Sözlərini olduğu kimi yazacam: 
 
 > "No experience is in itself a cause of our success or failure. We do not suffer from the shock of our experiences—the so-called trauma—but instead we make out of them whatever suits our purposes. We are not determined by our experiences, but the meaning we give them is self-determining."  
