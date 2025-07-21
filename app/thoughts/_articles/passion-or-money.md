@@ -1,10 +1,11 @@
-export const metadata = {
-  title: 'Pul yoxsa Karyera',
-  date: '2025.06.17',
-  description: 'At the time when I was getting into web development, I had the chance to read one of the most inspiring book about the web, Aaron Swartz\'s A Programmable Web. And it completely changed my mind.',
-  tags: ['career'],
-  hidden: true
-}
+---
+title: "Pul yoxsa Karyera"
+date: "2025.06.17"
+tags:
+    - career
+description: ""
+hidden: false
+---
 
 # Passion Or Money - Choosing Career
 
@@ -26,3 +27,4 @@ Amma sözümün canı odur ki, məqsəd finansal azadlıqdırsa, daha geniş fik
 - Bu karyera vasitəsilə nə qədər tez öz maliyyə sərvətini qura bilərsən.
 - Qazanacağın biznes təhsilinin keyfiyyəti: Yəni, karyeran zamanı gündəlik etdiyin işlərdən nələr öyrənəcəksən, sənə nələr qatacaq? Gedib kassir ya da ofisiant işləyib vaxtını öldürmək təbii ki, bilik baxımından sərf etdiyin vaxta nisbətən heç nə qazandırmır.
 - Netvorkunu (əlaqə şəbəkəni) inkişaf etdirmək üçün verdiyi imkanlar.
+

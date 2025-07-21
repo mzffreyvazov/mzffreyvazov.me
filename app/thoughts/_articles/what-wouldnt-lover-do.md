@@ -1,12 +1,15 @@
-export const metadata = {
-  title: "What Wouldn't A Lover Do",
-  date: '2025.06.17',
-  description: '',
-  tags: ['relationships', 'psychology', 'adlerian-psychology'],
-  hidden: false
-}
+---
+title: "What Wouldn't A Lover Do"
+date: 2025.06.17
+description: ''
+tags:
+ - relationships
+ - psychology
+ - adlerian-psychology
+hidden: false
+---
 
-# What Wouldn’t A Lover Do
+# What Wouldn't A Lover Do
 
 > Sual: Sevən nə etməz?
 
@@ -47,4 +50,3 @@ Rəqs edərkən də baş verənləri ayırd etməyə, **fərqləndirməyə** ça
 - Özümü təhlükəsiz və dəstəklənmiş hiss edirəm, yoxsa məni yıxacağından qorxuram?
 
 Axrıncı sualınızın cavabı da sizin öz dəyərlər sisteminizdən asılıdır.
-

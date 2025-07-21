@@ -6,7 +6,7 @@ tags:
   - demo
   - shortcodes
   - markdown
-hidden: false
+hidden: true
 ---
 
 # Shortcodes Demo - Markdown with Interactive Components

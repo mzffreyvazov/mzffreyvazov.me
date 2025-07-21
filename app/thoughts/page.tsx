@@ -23,14 +23,13 @@ export default async function Page() {
 
   for (const article of articles) {
     let metadata
-    const slug = article.replace(/\.(mdx|md)$/, '')
+    const slug = article.replace(/\.md$/, '')
 
     // Skip if we already processed this slug
     if (processedSlugs.has(slug)) continue
 
-    // Prefer .md files over .mdx files (new format over legacy)
+    // Only handle .md files
     const mdFile = `${slug}.md`
-    const mdxFile = `${slug}.mdx`
     
     if (articles.includes(mdFile)) {
       // Handle Markdown files with YAML frontmatter (new format)
@@ -38,15 +37,6 @@ export default async function Page() {
       const fileContent = await fs.readFile(filePath, 'utf8')
       const parsed = parseMarkdown(fileContent)
       metadata = parsed.metadata
-      processedSlugs.add(slug)
-    } else if (articles.includes(mdxFile)) {
-      // Handle MDX files (legacy format) - only import .mdx files
-      const module = await import(
-        /* webpackInclude: /\.mdx$/ */
-        `./_articles/${mdxFile}`
-      )
-      if (!module.metadata) throw new Error('Missing `metadata` in ' + mdxFile)
-      metadata = module.metadata
       processedSlugs.add(slug)
     } else {
       continue // Skip non-markdown files
