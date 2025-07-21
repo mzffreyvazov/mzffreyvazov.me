@@ -8,10 +8,11 @@ tags:
   - philosophy
 hidden: false
 ---
-
 # Adlerian Psixologiya: Travma, Həyat Tərzi və Cəsarət
 
 > **Sual**: Çox vaxt insanın davranışlarını travmalarla, genetikayla, yaşadığı mühitlə izah edirik. Pis bir şey edənə 'uşaqlığı çətin olub'  'travmaları çoxdu' 'ailəsindən belə öyrənib' deyirik. Amma bəs iradə? Əgər hər şey keçmişin nəticəsidirsə, insanın seçimi, dəyişmək gücü nə olur? Sizcə, iradənin nə qədər rolu var?
+
+**This is a change from obsidian**
 
 Adlerin psixologiyasında travma qəti şəkildə inkar edilir. Freud'un ideyası bu idi ki, insanın psixi yaraları (psychic wounds), yəni travmaları onun indiki bədbəxtliyini, xoşbəxt olmamağını izah edir, yəni arada səbəb-nəticə əlaqəsi olduğunu göstərib. Adler isə bunla razılaşmayıb. Sözlərini olduğu kimi yazacam: 
 
