@@ -2,7 +2,9 @@
 title: 'Markdown Example'
 date: '2025.07.21'
 description: 'Testing the new Markdown system with YAML frontmatter'
-tags: ['example', 'markdown']
+tags:
+  - example
+  - markdown
 hidden: false
 ---
 

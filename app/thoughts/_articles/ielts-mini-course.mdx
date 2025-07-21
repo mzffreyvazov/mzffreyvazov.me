@@ -2,7 +2,8 @@
 title: 'IELTS Complete Mini Course'
 date: '2025.07.12'
 description: 'A complete mini course for IELTS'
-tags: ['ielts']
+tags:
+  - ielts
 hidden: false
 ---
 

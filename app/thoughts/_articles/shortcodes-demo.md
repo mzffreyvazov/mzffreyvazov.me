@@ -2,7 +2,10 @@
 title: 'Shortcodes Demo - Markdown with Interactive Components'
 date: '2025.07.21'
 description: 'Demonstration of using shortcodes to embed React components in Markdown'
-tags: ['demo', 'shortcodes', 'markdown']
+tags:
+  - demo
+  - shortcodes
+  - markdown
 hidden: false
 ---
 
