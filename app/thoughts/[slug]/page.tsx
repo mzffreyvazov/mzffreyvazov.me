@@ -6,6 +6,8 @@ import Link from 'next/link'
 import cn from 'clsx'
 import TableOfContents from '@/components/table-of-contents'
 import MobileTableOfContents from '@/components/mobile-table-of-contents'
+import MarkdownRenderer from '@/components/markdown-renderer'
+import { parseMarkdown } from '@/lib/markdown'
 
 export default async function Page(props: {
   params: Promise<{
@@ -13,11 +15,34 @@ export default async function Page(props: {
   }>
 }) {
   const params = await props.params
+  const articlesDirectory = path.join(process.cwd(), 'app', 'thoughts', '_articles')
   
   try {
-    const { default: MDXContent, metadata } = await import(
-      '../_articles/' + `${params.slug}.mdx`
-    )
+    // Check if .md file exists first (new format)
+    const mdFilePath = path.join(articlesDirectory, `${params.slug}.md`)
+    const mdxFilePath = path.join(articlesDirectory, `${params.slug}.mdx`)
+    
+    let metadata
+    let content: React.ReactNode
+    
+    try {
+      // Try to read .md file first
+      const fileContent = await fs.readFile(mdFilePath, 'utf8')
+      const parsed = parseMarkdown(fileContent)
+      metadata = parsed.metadata
+      content = <MarkdownRenderer>{parsed.markdownContent}</MarkdownRenderer>
+    } catch (mdError) {
+      // If .md file doesn't exist, try .mdx file (legacy format)
+      try {
+        const { default: MDXContent, metadata: mdxMetadata } = await import(
+          '../_articles/' + `${params.slug}.mdx`
+        )
+        metadata = mdxMetadata
+        content = <MDXContent />
+      } catch (mdxError) {
+        throw new Error(`Article not found: ${params.slug}`)
+      }
+    }
 
     return (
       <div className="relative">
@@ -26,21 +51,22 @@ export default async function Page(props: {
           lang={metadata.chinese ? 'zh-Hans' : 'en'}
         >
           {metadata.tags && metadata.tags.length > 0 && (
-            <div className="flex flex-wrap  mb-4">
-              <span className="text-sm text-rurikon-300 mr-1 self-center">topics:</span>              {metadata.tags.map((tag: string, index: number) => (
-                  <Fragment key={tag}>
-                    {index > 0 && <span className="text-sm text-rurikon-300 mr-1">,</span>}
-                    <Link 
-                      href={`/thoughts?tag=${encodeURIComponent(tag)}`}
-                      className="text-sm text-rurikon-500 hover:text-rurikon-700 border-b border-rurikon-200 hover:border-rurikon-400 transition-colors"
-                    >
-                      {tag}
-                    </Link>
-                  </Fragment>
-                ))}
+            <div className="flex flex-wrap mb-4">
+              <span className="text-sm text-rurikon-300 mr-1 self-center">topics:</span>
+              {metadata.tags.map((tag: string, index: number) => (
+                <Fragment key={tag}>
+                  {index > 0 && <span className="text-sm text-rurikon-300 mr-1">,</span>}
+                  <Link 
+                    href={`/thoughts?tag=${encodeURIComponent(tag)}`}
+                    className="text-sm text-rurikon-500 hover:text-rurikon-700 border-b border-rurikon-200 hover:border-rurikon-400 transition-colors"
+                  >
+                    {tag}
+                  </Link>
+                </Fragment>
+              ))}
             </div>
           )}
-          <MDXContent />
+          {content}
         </div>
         <TableOfContents />
         <MobileTableOfContents />
@@ -53,22 +79,34 @@ export default async function Page(props: {
 }
 
 export async function generateStaticParams() {
-  const articles = await fs.readdir(
-    path.join(process.cwd(), 'app', 'thoughts', '_articles')
-  )
+  const articlesDirectory = path.join(process.cwd(), 'app', 'thoughts', '_articles')
+  const articles = await fs.readdir(articlesDirectory)
 
   const params = []
   
   for (const name of articles) {
-    if (!name.endsWith('.mdx')) continue
+    if (!name.endsWith('.mdx') && !name.endsWith('.md')) continue
+    
+    let metadata
+    
+    if (name.endsWith('.md')) {
+      // Handle .md files with YAML frontmatter
+      const filePath = path.join(articlesDirectory, name)
+      const fileContent = await fs.readFile(filePath, 'utf8')
+      const parsed = parseMarkdown(fileContent)
+      metadata = parsed.metadata
+    } else if (name.endsWith('.mdx')) {
+      // Handle .mdx files (legacy format)
+      const { metadata: mdxMetadata } = await import('../_articles/' + name)
+      metadata = mdxMetadata
+    }
     
     // Check if the article is hidden
-    const { metadata } = await import('../_articles/' + name)
-    if (metadata.hidden === true) continue
+    if (metadata?.hidden === true) continue
     
     params.push({
       params: {
-        slug: name.replace(/\.mdx$/, ''),
+        slug: name.replace(/\.(mdx|md)$/, ''),
       },
     })
   }
@@ -78,17 +116,30 @@ export async function generateStaticParams() {
 
 export async function generateMetadata(props: {
   params: Promise<{
-    slug:string
+    slug: string
   }>
 }) {
   const params = await props.params
+  const articlesDirectory = path.join(process.cwd(), 'app', 'thoughts', '_articles')
   
   try {
-    const metadata = (await import('../_articles/' + `${params.slug}.mdx`))
-      .metadata
-    return {
-      title: metadata.title,
-      description: metadata.description,
+    // Check if .md file exists first
+    const mdFilePath = path.join(articlesDirectory, `${params.slug}.md`)
+    
+    try {
+      const fileContent = await fs.readFile(mdFilePath, 'utf8')
+      const parsed = parseMarkdown(fileContent)
+      return {
+        title: parsed.metadata.title,
+        description: parsed.metadata.description,
+      }
+    } catch (mdError) {
+      // If .md file doesn't exist, try .mdx file
+      const metadata = (await import('../_articles/' + `${params.slug}.mdx`)).metadata
+      return {
+        title: metadata.title,
+        description: metadata.description,
+      }
     }
   } catch (error) {
     // Return default metadata if file doesn't exist

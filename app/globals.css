@@ -173,7 +173,8 @@ code {
 
 pre {
   --shiki-foreground: #414141;
-  --shiki-background: transparent;
+  --shiki-background: #f7f7f7; /* Ensure background is not transparent */
+  color: var(--shiki-foreground); /* Set default text color */
 }
 
 code span {
