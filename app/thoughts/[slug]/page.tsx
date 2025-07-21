@@ -35,6 +35,7 @@ export default async function Page(props: {
       // If .md file doesn't exist, try .mdx file (legacy format)
       try {
         const { default: MDXContent, metadata: mdxMetadata } = await import(
+          /* webpackInclude: /\.mdx$/ */
           '../_articles/' + `${params.slug}.mdx`
         )
         metadata = mdxMetadata
@@ -96,9 +97,17 @@ export async function generateStaticParams() {
       const parsed = parseMarkdown(fileContent)
       metadata = parsed.metadata
     } else if (name.endsWith('.mdx')) {
-      // Handle .mdx files (legacy format)
-      const { metadata: mdxMetadata } = await import('../_articles/' + name)
-      metadata = mdxMetadata
+      // Handle .mdx files (legacy format) - only try to import .mdx files
+      try {
+        const { metadata: mdxMetadata } = await import(
+          /* webpackInclude: /\.mdx$/ */
+          '../_articles/' + name.replace('.mdx', '.mdx')
+        )
+        metadata = mdxMetadata
+      } catch (error) {
+        console.error(`Failed to import ${name}:`, error)
+        continue
+      }
     }
     
     // Check if the article is hidden
@@ -135,7 +144,10 @@ export async function generateMetadata(props: {
       }
     } catch (mdError) {
       // If .md file doesn't exist, try .mdx file
-      const metadata = (await import('../_articles/' + `${params.slug}.mdx`)).metadata
+      const metadata = (await import(
+        /* webpackInclude: /\.mdx$/ */
+        '../_articles/' + `${params.slug}.mdx`
+      )).metadata
       return {
         title: metadata.title,
         description: metadata.description,

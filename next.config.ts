@@ -21,4 +21,12 @@ export default withMDX()({
     contentDispositionType: 'inline',
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
+  webpack: (config: any) => {
+    // Exclude .md files from being processed by webpack as modules
+    config.module.rules.push({
+      test: /\.md$/,
+      type: 'asset/source'
+    })
+    return config
+  },
 } satisfies NextConfig)

@@ -40,8 +40,11 @@ export default async function Page() {
       metadata = parsed.metadata
       processedSlugs.add(slug)
     } else if (articles.includes(mdxFile)) {
-      // Handle MDX files (legacy format)
-      const module = await import('./_articles/' + mdxFile)
+      // Handle MDX files (legacy format) - only import .mdx files
+      const module = await import(
+        /* webpackInclude: /\.mdx$/ */
+        `./_articles/${mdxFile}`
+      )
       if (!module.metadata) throw new Error('Missing `metadata` in ' + mdxFile)
       metadata = module.metadata
       processedSlugs.add(slug)
