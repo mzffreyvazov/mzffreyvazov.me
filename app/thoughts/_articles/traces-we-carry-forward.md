@@ -9,8 +9,6 @@ hidden: false
 ---
 # Traces We Carry Forward
 
-Salam, hər vaxtınız xeyir. Mövzu üçün təşəkkürlər.
-
 Hər bir daxil olduğun münasibət, istəyir bir həftə çəksin ya da bir il, öz məqsədinə xidmət edir. Yəni bunun uğurlu ya da uğursuz olması deyə bir şey yoxdur məncə. Cəmiyyətdə belə bir anlayış var ki, bu münasibət müəyyən mərhələlərlə, məsələn, evliliyə çatdığı zaman ya da uzunmüddətli olduğunuz zaman, ya da sevgili olub "rəsmi­ləşdiyi" zaman "uğurlu" olur, ya da bunlar olmadıqda avtomatik münasibətlər "uğursuz" olur. Belə olanda da, bizi formalaşdıran bu təcrübələrin çoxu səhv, ya da vaxt itkisi kimi dəyərləndirilir.
 
 Bayaq da dediyim ki, hər bir münasibət öz məqsədinə xidmət edir. Münasibətdəki tərəflər bunun fərqində ola da bilər, olmaya da bilər, və ya sonradan bunu başa düşə bilər. Və o məqsəd də insanı formalaşdırmaqdır (bu formalaşma pozitiv də ola bilər, neqativ də, bu da sonda insanın münasibətə öz baxış açısından asılıdır), yəni sənin bilmədiyin tərəflərini sənə göstərmək, özünü kəşf etməyə səbəb olmaqdır. Və belə olan halda da, bu bütün münasibətlər üçün keçərli olur, istəyir 1 günlük, 1 həftəlik ya da 1 illik. 1 həftəlik münasibət sənə sərhədlərin haqda öyrədə bilər, 1 illik münasibət bu qədər uzun müddət boyunca birinə güvənməyin və onu sevməyin nə olduğunu öyrədə bilər, 10 illik münasibət, bu qədər müddətdə insanın necə dəyişdiyini, birlikdə böyüməyin nə olduğunu öyrədə bilər. Yəni bir sözlə, hər münasibət səni nəcə­sə formalaşdırır.
