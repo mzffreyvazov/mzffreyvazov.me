@@ -7,6 +7,7 @@ tags:
   - adlerian-psychology
 hidden: false
 ---
+# Traces We Carry Forward
 
 Salam, hər vaxtınız xeyir. Mövzu üçün təşəkkürlər.
 
