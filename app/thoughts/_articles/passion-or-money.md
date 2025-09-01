@@ -4,7 +4,7 @@ date: "2025.06.17"
 tags:
     - career
 description: ""
-hidden: false
+hidden: true
 ---
 
 # Passion Or Money - Choosing Career
