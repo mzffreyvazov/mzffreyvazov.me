@@ -11,7 +11,7 @@ hidden: false
 
 Salam, hər vaxtınız xeyir. Mövzu üçün təşəkkürlər.
 
-Hər bir daxil olduğun münasibət, istəyir 1 həftə çəksin ya da 1 il, öz məqsədinə xidmət edir. Yəni bunun uğurlu ya da uğursuz olması deyə bir şey yoxdur məncə. Cəmiyyətdə belə bir anlayış var ki, bu münasibət müəyyən mərhələlərlə, məsələn, evliliyə çatdığı zaman ya da uzunmüddətli olduğunuz zaman, ya da sevgili olub "rəsmi­ləşdiyi" zaman "uğurlu" olur, ya da bunlar olmadıqda avtomatik münasibətlər "uğursuz" olur. Belə olanda da, bizi formalaşdıran bu təcrübələrin çoxu səhv, ya da vaxt itkisi kimi dəyərləndirilir.
+Hər bir daxil olduğun münasibət, istəyir bir həftə çəksin ya da bir il, öz məqsədinə xidmət edir. Yəni bunun uğurlu ya da uğursuz olması deyə bir şey yoxdur məncə. Cəmiyyətdə belə bir anlayış var ki, bu münasibət müəyyən mərhələlərlə, məsələn, evliliyə çatdığı zaman ya da uzunmüddətli olduğunuz zaman, ya da sevgili olub "rəsmi­ləşdiyi" zaman "uğurlu" olur, ya da bunlar olmadıqda avtomatik münasibətlər "uğursuz" olur. Belə olanda da, bizi formalaşdıran bu təcrübələrin çoxu səhv, ya da vaxt itkisi kimi dəyərləndirilir.
 
 Bayaq da dediyim ki, hər bir münasibət öz məqsədinə xidmət edir. Münasibətdəki tərəflər bunun fərqində ola da bilər, olmaya da bilər, və ya sonradan bunu başa düşə bilər. Və o məqsəd də insanı formalaşdırmaqdır (bu formalaşma pozitiv də ola bilər, neqativ də, bu da sonda insanın münasibətə öz baxış açısından asılıdır), yəni sənin bilmədiyin tərəflərini sənə göstərmək, özünü kəşf etməyə səbəb olmaqdır. Və belə olan halda da, bu bütün münasibətlər üçün keçərli olur, istəyir 1 günlük, 1 həftəlik ya da 1 illik. 1 həftəlik münasibət sənə sərhədlərin haqda öyrədə bilər, 1 illik münasibət bu qədər uzun müddət boyunca birinə güvənməyin və onu sevməyin nə olduğunu öyrədə bilər, 10 illik münasibət, bu qədər müddətdə insanın necə dəyişdiyini, birlikdə böyüməyin nə olduğunu öyrədə bilər. Yəni bir sözlə, hər münasibət səni nəcə­sə formalaşdırır.
 
@@ -26,3 +26,7 @@ Və bu düşüncə tərzi bizi uzunmüddətli münasibətlərdə daha yaxşı ed
 Keçmiş münasibətində xəyanətə uğramısan deyə, o demək deyil ki, indi daha heç kimə güvənməməlisən, ya da indiki münasibətində sənə yenə xəyanət qorxusu ilə yaşamalısan. Bu bizi öz keçmişimizin qurbanına çevirir, və onun qulu edir. Bu sadəcə inkişaf etməmək üçün özümüzə danışdığımız yalandır və ya bəhanədir.  
 
 İnsanın ümumiyyətlə həyatı onun keçmiş təcrübələri ilə müəyyən edilmir, ona verdiyi mənayla müəyyən edilir. Bu verdiyimiz məna da həmin təcrübənin bizdə yaratdığı (bu şüurlu və ya şüursuz şəkildə də ola bilər) məqsədlərdən asılı olur. Məsələn, xəyanətə uğradığın zaman, bir daha zərər görməmək və özünü qorumaq məqsədini yarada bilərsən, buna görə də həmin o xəyanəti heç kimə güvənməmək üçün bir bəhanə kimi istifadə edə bilərsən. Ona görə də əsas məsələ keçmişdə nə baş verdiyi yox, ona necə məna yüklədiyindir, baş verənlərə əsasən məqsədlərini necə formalaşdırmağındır. Bu haqda çox şey yazmaq olar, bu qrupda da bir neçə dəfə bu haqda mövzu düşüb, mən özüm də yazmışam. Amma düşünürəm ki, əsas məsələyə toxundum.  
+
+
+Oxu:
+- [The Courage to be Disliked](https://www.goodreads.com/book/show/43306206-the-courage-to-be-disliked)
