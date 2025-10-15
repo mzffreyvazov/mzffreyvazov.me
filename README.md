@@ -1,4 +1,4 @@
-# muzeffereyvazov.me
+# mzffreyvazov.me
 
-my personal website: [https://mzffreyvazov-me.vercel.app](https://mzffreyvazov-me.vercel.app).
+my personal website: [https://mzffreyvazov-me.vercel.app](https://mzffreyvazov.me).
 
