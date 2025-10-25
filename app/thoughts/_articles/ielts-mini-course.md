@@ -4,7 +4,7 @@ date: '2025.07.12'
 description: 'A complete mini course for IELTS'
 tags:
   - ielts
-hidden: false
+hidden: true
 ---
 
 # IELTS Complete Mini Course
