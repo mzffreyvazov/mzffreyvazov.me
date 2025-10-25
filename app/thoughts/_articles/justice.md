@@ -6,7 +6,7 @@ tags:
   - philosophy
   - civilization
   - history
-hidden: false
+hidden: true
 ---
 # The Pursuit of Justice 
 
