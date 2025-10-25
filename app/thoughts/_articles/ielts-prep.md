@@ -1,7 +1,7 @@
 ---
 title: 'My IELTS Preparation'
-date: '2025.07.12'
-description: 'A detailed and comprehensive '
+date: '2025.10.25'
+description: 'A detailed and comprehensive guide on how I prepared for IELTS'
 tags:
   - ielts
 hidden: false
