@@ -10,7 +10,12 @@ export const metadata = {
 export default async function Page() {
   const filePath = path.join(process.cwd(), 'app', '_contents', 'home.md')
   const fileContent = await fs.readFile(filePath, 'utf8')
-  const { markdownContent } = parseMarkdown(fileContent)
+  const { metadata: frontmatter, markdownContent } = parseMarkdown(fileContent)
 
-  return <MarkdownRenderer>{markdownContent}</MarkdownRenderer>
+  return (
+    <div>
+      <h1 className="text-2xl font-semibold mb-6">{frontmatter.title}</h1>
+      <MarkdownRenderer>{markdownContent}</MarkdownRenderer>
+    </div>
+  )
 }
