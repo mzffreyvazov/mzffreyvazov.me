@@ -5,8 +5,7 @@ import React, { Fragment } from 'react'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import cn from 'clsx'
-import TableOfContents from '@/components/table-of-contents'
-import MobileTableOfContents from '@/components/mobile-table-of-contents'
+import TocFloatingButton from '@/components/toc-floating-button'
 import MarkdownRenderer from '@/components/markdown-renderer'
 import { parseMarkdown } from '@/lib/markdown'
 
@@ -43,26 +42,48 @@ export default async function Page(props: {
         className={cn(metadata.chinese && 'text-justify font-zh')}
         lang={metadata.chinese ? 'zh-Hans' : 'en'}
       >
-        {metadata.tags && metadata.tags.length > 0 && (
-          <div className="flex flex-wrap mb-4">
-            <span className="text-sm text-rurikon-300 mr-1 self-center">topics:</span>
-            {metadata.tags.map((tag: string, index: number) => (
-              <Fragment key={tag}>
-                {index > 0 && <span className="text-sm text-rurikon-300 mr-1">,</span>}
-                <Link 
-                  href={`/thoughts?tag=${encodeURIComponent(tag)}`}
-                  className="text-sm text-rurikon-500 hover:text-rurikon-700 border-b border-rurikon-200 hover:border-rurikon-400 transition-colors"
-                >
-                  {tag}
-                </Link>
-              </Fragment>
-            ))}
+        {/* Article Header */}
+        <header className="mb-8">
+          <h1 className="font-bold text-2xl text-rurikon-700 text-balance">
+            {metadata.title}
+          </h1>
+          
+          {/* Metadata section */}
+          <div className="mt-3 space-y-1 text-sm">
+            {metadata.description && (
+              <p className="text-rurikon-400 italic">
+                {metadata.description}
+              </p>
+            )}
+            
+            {metadata.tags && metadata.tags.length > 0 && (
+              <div className="flex flex-wrap">
+                <span className="text-rurikon-300 mr-1 self-center">topics:</span>
+                {metadata.tags.map((tag: string, index: number) => (
+                  <Fragment key={tag}>
+                    {index > 0 && <span className="text-rurikon-300 mr-1">,</span>}
+                    <Link 
+                      href={`/thoughts?tag=${encodeURIComponent(tag)}`}
+                      className="text-rurikon-500 hover:text-rurikon-700 border-b border-rurikon-200 hover:border-rurikon-400 transition-colors"
+                    >
+                      {tag}
+                    </Link>
+                  </Fragment>
+                ))}
+              </div>
+            )}
+            
+            {metadata.date && (
+              <p className="text-rurikon-300">
+                {metadata.date}
+              </p>
+            )}
           </div>
-        )}
+        </header>
+        
         {content}
       </div>
-      <TableOfContents />
-      <MobileTableOfContents />
+      <TocFloatingButton />
     </div>
   )
 }

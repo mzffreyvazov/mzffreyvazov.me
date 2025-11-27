@@ -15,7 +15,13 @@ export interface ShortcodeComponents {
 // Parse markdown content with YAML frontmatter
 export function parseMarkdown(content: string) {
   const { data: metadata, content: markdownContent } = matter(content)
-  return { metadata, markdownContent }
+  
+  // Remove the first h1 heading if it exists (since we display title from frontmatter)
+  // Trim first to handle any leading whitespace after frontmatter
+  const trimmedContent = markdownContent.trim()
+  const contentWithoutFirstH1 = trimmedContent.replace(/^#\s+.+(\r?\n)+/, '')
+  
+  return { metadata, markdownContent: contentWithoutFirstH1 }
 }
 
 // Transform directive nodes to JSX

@@ -199,7 +199,7 @@ export default function MarkdownRenderer({ children }: MarkdownRendererProps) {
       )
     },
     strong: (props: any) => <strong className='font-bold' {...props} />,
-    p: (props: any) => <p className='mt-4 leading-relaxed text-rurikon-600' {...props} />,
+    p: (props: any) => <p className='mt-4 leading-relaxed text-rurikon-500' {...props} />,
     blockquote: (props: any) => (
       <blockquote
         className='pl-6 -ml-6 sm:pl-10 sm:-ml-10 md:pl-14 md:-ml-14 not-mobile:text-rurikon-400'

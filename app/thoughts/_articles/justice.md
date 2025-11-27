@@ -1,5 +1,5 @@
 ---
-title: 'The Pursuit of Justice'
+title: 'Is it even possible?'
 date: '2025.10.15'
 description: ''
 tags:
@@ -8,6 +8,7 @@ tags:
   - history
 hidden: true
 ---
+
 # The Pursuit of Justice 
 
 Ədalət, fikrimcə, kontekstdən asılı olaraq seçilən davranış strategiyasıdı. Kontekst deyəndə isə əsasən iki konteksti nəzərdə tuturam. 
