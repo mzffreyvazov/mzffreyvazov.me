@@ -1,12 +1,12 @@
 ---
-title: 'Is it even possible?'
+title: 'The Pursuit of Justice'
 date: '2025.10.15'
-description: ''
+description: 'Is it even possible?'
 tags:
   - philosophy
   - civilization
   - history
-hidden: true
+hidden: false
 ---
 
 # The Pursuit of Justice 

@@ -1,7 +1,7 @@
 ---
 title: 'Our Past?'
 date: '2025.07.12'
-description: ''
+description: 'Deny trauma'
 tags:
   - psychology
   - adlerian-psychology
