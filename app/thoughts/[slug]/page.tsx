@@ -21,32 +21,20 @@ export default async function Page(props: {
   const params = await props.params
   const articlesDirectory = path.join(process.cwd(), 'app', 'thoughts', '_articles')
   
-  // Check if .md file exists first (new format)
   const mdFilePath = path.join(articlesDirectory, `${params.slug}.md`)
-  const mdxFilePath = path.join(articlesDirectory, `${params.slug}.mdx`)
   
   let metadata
   let content: React.ReactNode
   
   try {
-    // Try to read .md file first
+    // Read .md file
     const fileContent = await fs.readFile(mdFilePath, 'utf8')
     const parsed = parseMarkdown(fileContent)
     metadata = parsed.metadata
     content = <MarkdownRenderer>{parsed.markdownContent}</MarkdownRenderer>
-  } catch (mdError) {
-    // If .md file doesn't exist, try .mdx file (legacy format)
-    try {
-      const { default: MDXContent, metadata: mdxMetadata } = await import(
-        /* webpackInclude: /\.mdx$/ */
-        '../_articles/' + `${params.slug}.mdx`
-      )
-      metadata = mdxMetadata
-      content = <MDXContent />
-    } catch (mdxError) {
-      // If neither .md nor .mdx file exists, return 404
-      notFound()
-    }
+  } catch {
+    // If .md file doesn't exist, return 404
+    notFound()
   }
 
   return (
@@ -86,41 +74,25 @@ export async function generateStaticParams() {
   const params = []
   
   for (const name of articles) {
-    if (!name.endsWith('.mdx') && !name.endsWith('.md')) continue
-    
-    let metadata
+    // Only handle .md files
+    if (!name.endsWith('.md')) continue
     
     try {
-      if (name.endsWith('.md')) {
-        // Handle .md files with YAML frontmatter
-        const filePath = path.join(articlesDirectory, name)
-        const fileContent = await fs.readFile(filePath, 'utf8')
-        const parsed = parseMarkdown(fileContent)
-        metadata = parsed.metadata
-      } else if (name.endsWith('.mdx')) {
-        // Handle .mdx files (legacy format) - only try to import .mdx files
-        try {
-          const { metadata: mdxMetadata } = await import(
-            /* webpackInclude: /\.mdx$/ */
-            '../_articles/' + name.replace('.mdx', '.mdx')
-          )
-          metadata = mdxMetadata
-        } catch (error) {
-          console.error(`Failed to import ${name}:`, error)
-          continue
-        }
-      }
+      const filePath = path.join(articlesDirectory, name)
+      const fileContent = await fs.readFile(filePath, 'utf8')
+      const parsed = parseMarkdown(fileContent)
+      const metadata = parsed.metadata
       
       // Check if the article is hidden
       if (metadata?.hidden === true) continue
       
       params.push({
         params: {
-          slug: name.replace(/\.(mdx|md)$/, ''),
+          slug: name.replace(/\.md$/, ''),
         },
       })
     } catch (error) {
-      // Skip files that can't be processed (e.g., file was deleted during build)
+      // Skip files that can't be processed
       console.warn(`Skipping ${name} due to error:`, error)
       continue
     }
@@ -148,18 +120,15 @@ export async function generateMetadata(props: {
         title: parsed.metadata.title,
         description: parsed.metadata.description,
       }
-    } catch (mdError) {
-      // If .md file doesn't exist, try .mdx file
-      const metadata = (await import(
-        /* webpackInclude: /\.mdx$/ */
-        '../_articles/' + `${params.slug}.mdx`
-      )).metadata
+    } catch {
+      // If .md file doesn't exist, return default metadata
+      // Note: MDX files should be migrated to .md format
       return {
-        title: metadata.title,
-        description: metadata.description,
+        title: params.slug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
+        description: '',
       }
     }
-  } catch (error) {
+  } catch {
     // Return default metadata if file doesn't exist
     return {
       title: 'Article Not Found',

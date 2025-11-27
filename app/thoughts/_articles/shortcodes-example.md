@@ -5,7 +5,7 @@ description: 'Testing the new Markdown system with YAML frontmatter'
 tags:
   - example
   - markdown
-hidden: true
+hidden: false
 ---
 
 # Markdown Example

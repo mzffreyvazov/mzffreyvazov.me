@@ -25,6 +25,31 @@ const Alert = ({ type = 'info', children }: { type?: 'info' | 'warning' | 'error
   )
 }
 
+// Shortcode component: Image (::img{src="image.jpg" alt="description" caption="optional caption"})
+const ImageEmbed = ({ src, alt, caption, width }: { src: string, alt?: string, caption?: string, width?: string }) => {
+  const imageSrc = src?.startsWith('https://') || src?.startsWith('http://') ? src : `/assets/images/${src}`
+  const imageWidth = width ? parseInt(width) : 800
+  
+  return (
+    <figure className="mt-7">
+      <Image
+        src={imageSrc}
+        alt={alt || caption || ''}
+        width={imageWidth}
+        height={Math.round(imageWidth * 0.75)}
+        quality={95}
+        draggable={false}
+        className="rounded-sm"
+      />
+      {caption && (
+        <figcaption className="mt-2 text-sm text-rurikon-400 italic">
+          {caption}
+        </figcaption>
+      )}
+    </figure>
+  )
+}
+
 // Shortcode component: YouTube
 const YouTubeEmbed = ({ id }: { id: string }) => (
   <div className="mt-7 aspect-video">
@@ -100,40 +125,47 @@ export default function MarkdownRenderer({ children }: MarkdownRendererProps) {
     youtube: (props: any) => {
       return <YouTubeEmbed id={props.id} />
     },
+    img: (props: any) => {
+      // Handle ::img{src="..." alt="..." caption="..."} shortcode
+      if (props.src) {
+        return <ImageEmbed src={props.src} alt={props.alt} caption={props.caption} width={props.width} />
+      }
+      return null
+    },
     
     // Standard HTML element overrides
     h1: (props: any) => (
       <h1
         id={slugify(props.children)}
-        className='font-semibold mb-7 text-rurikon-600 text-balance'
+        className='font-bold text-2xl mb-3 text-rurikon-700 text-balance'
         {...props}
       />
     ),
     h2: (props: any) => (
       <h2
         id={slugify(props.children)}
-        className='font-semibold mt-14 mb-7 text-rurikon-600 text-balance'
+        className='font-semibold text-xl mt-12 mb-3 text-rurikon-600 text-balance'
         {...props}
       />
     ),
     h3: (props: any) => (
       <h3
         id={slugify(props.children)}
-        className='font-semibold mt-14 mb-7 text-rurikon-600 text-balance'
+        className='font-semibold text-lg mt-10 mb-2 text-rurikon-600 text-balance'
         {...props}
       />
     ),
     h4: (props: any) => (
       <h4
         id={slugify(props.children)}
-        className='font-semibold mt-12 mb-6 text-rurikon-600 text-balance'
+        className='font-semibold text-base mt-8 mb-2 text-rurikon-600 text-balance'
         {...props}
       />
     ),
     h5: (props: any) => (
       <h5
         id={slugify(props.children)}
-        className='font-semibold mt-12 mb-6 text-rurikon-600 text-balance'
+        className='font-medium text-base mt-6 mb-2 text-rurikon-500 text-balance'
         {...props}
       />
     ),
@@ -167,7 +199,7 @@ export default function MarkdownRenderer({ children }: MarkdownRendererProps) {
       )
     },
     strong: (props: any) => <strong className='font-bold' {...props} />,
-    p: (props: any) => <p className='mt-6' {...props} />,
+    p: (props: any) => <p className='mt-4 leading-relaxed text-rurikon-600' {...props} />,
     blockquote: (props: any) => (
       <blockquote
         className='pl-6 -ml-6 sm:pl-10 sm:-ml-10 md:pl-14 md:-ml-14 not-mobile:text-rurikon-400'
@@ -175,7 +207,7 @@ export default function MarkdownRenderer({ children }: MarkdownRendererProps) {
       />
     ),
     pre: (props: any) => (
-      <pre className='mt-7 whitespace-pre md:whitespace-pre-wrap' {...props} />
+      <pre className='whitespace-pre md:whitespace-pre-wrap' {...props} />
     ),
     code: ({ className, children, ...props }: any) => {
       const match = /language-(\w+)/.exec(className || '')
@@ -184,14 +216,17 @@ export default function MarkdownRenderer({ children }: MarkdownRendererProps) {
       if (typeof children === 'string' && match) {
         // This is a code block with enhanced styling
         return (
-          <div className="mt-7">
-            <pre className="p-4 overflow-x-auto text-sm leading-relaxed text-black">
+          <div className="mt-6 rounded-lg border border-rurikon-100 overflow-hidden">
+            {language && (
+              <div className="bg-rurikon-50 px-4 py-1.5 border-b border-rurikon-100">
+                <span className="text-xs font-medium text-rurikon-400 uppercase tracking-wide">
+                  {language}
+                </span>
+              </div>
+            )}
+            <pre className="p-4 overflow-x-auto text-sm leading-relaxed bg-[#fafafa]">
               <code 
-                className={`${className} text-black font-mono block`}
-                style={{
-                  fontFamily: 'ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace',
-                  color: '#000000'
-                }}
+                className={`${className} font-mono block`}
                 {...props}
               >
                 {children}
@@ -202,46 +237,53 @@ export default function MarkdownRenderer({ children }: MarkdownRendererProps) {
       }
 
       // This is inline code
-      return <code className='inline bg-rurikon-50 px-1 rounded text-sm font-mono' {...props}>{children}</code>
+      return (
+        <code 
+          className='inline bg-rurikon-50 px-1.5 py-0.5 rounded text-sm font-mono text-rurikon-600 border border-rurikon-100' 
+          {...props}
+        >
+          {children}
+        </code>
+      )
     },
-    img: ({ src, alt, title }: any) => {
-      let img: React.ReactNode
+    // Standard markdown image syntax: ![alt](src "title")
+    image: ({ src, alt, title }: any) => {
+      if (!src) return null
+      
+      const imageSrc = src?.startsWith('https://') || src?.startsWith('http://') ? src : `/assets/images/${src}`
 
-      if (src?.startsWith('https://')) {
-        img = (
-          <Image
-            className='mt-7'
-            src={src}
-            alt={alt || ''}
-            width={800}
-            height={600}
-            quality={95}
-            draggable={false}
-          />
-        )
-      } else if (src) {
-        img = (
-          <Image
-            className='mt-7'
-            src={`/assets/images/${src}`}
-            alt={alt || ''}
-            width={800}
-            height={600}
-            quality={95}
-            draggable={false}
-          />
-        )
-      } else {
-        return null
-      }
+      const img = (
+        <Image
+          className='rounded-sm'
+          src={imageSrc}
+          alt={alt || ''}
+          width={800}
+          height={600}
+          quality={95}
+          draggable={false}
+        />
+      )
 
       if (title) {
-        return <BlockSideTitle title={title}>{img}</BlockSideTitle>
+        return (
+          <figure className="mt-6">
+            <BlockSideTitle title={title}>{img}</BlockSideTitle>
+          </figure>
+        )
       }
 
-      return img
+      return (
+        <figure className="mt-6">
+          {img}
+          {alt && (
+            <figcaption className="mt-2 text-sm text-rurikon-400 italic">
+              {alt}
+            </figcaption>
+          )}
+        </figure>
+      )
     },
-    hr: (props: any) => <hr className='my-14 w-24 border-rurikon-border' {...props} />,
+    hr: (props: any) => <hr className='my-10 w-24 border-rurikon-border' {...props} />,
   }
 
   return (

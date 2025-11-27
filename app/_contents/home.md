@@ -1,6 +1,6 @@
-export const metadata = {
-  title: 'Müzəffər Eyvazov',
-}
+---
+title: 'Müzəffər Eyvazov'
+---
 
 # Müzəffər Eyvazov
 

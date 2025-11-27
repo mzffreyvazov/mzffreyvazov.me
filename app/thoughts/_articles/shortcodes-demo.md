@@ -6,7 +6,7 @@ tags:
   - demo
   - shortcodes
   - markdown
-hidden: true
+hidden: false
 ---
 
 # Shortcodes Demo - Markdown with Interactive Components
@@ -54,6 +54,18 @@ Success alerts are great for highlighting achievements or positive outcomes!
 You can also embed YouTube videos:
 
 ::youtube{id="dQw4w9WgXcQ"}
+
+## Image Embeds
+
+Easily embed images using the shortcode syntax:
+
+::img{src="https://picsum.photos/800/600" alt="Sample image" caption="A sample placeholder image"}
+
+You can also use local images from the `/assets/images/` folder:
+
+```markdown
+::img{src="my-image.jpg" alt="Description" caption="Optional caption"}
+```
 
 ## Benefits of This Approach
 
