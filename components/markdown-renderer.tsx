@@ -1,13 +1,98 @@
 // components/markdown-renderer.tsx
 'use client'
 
-import React from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkDirective from 'remark-directive'
 import { visit } from 'unist-util-visit'
 import { BlockSideTitle } from '@/components/block-sidetitle'
 import Link from 'next/link'
 import Image from 'next/image'
+import { codeToHtml } from 'shiki'
+
+// Copy button component for code blocks
+const CopyButton = ({ code }: { code: string }) => {
+  const [copied, setCopied] = useState(false)
+  
+  const handleCopy = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(code)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    } catch (err) {
+      console.error('Failed to copy:', err)
+    }
+  }, [code])
+  
+  return (
+    <button
+      onClick={handleCopy}
+      className="p-1.5 rounded-md hover:bg-rurikon-100 transition-colors text-rurikon-400 hover:text-rurikon-600"
+      title={copied ? 'Copied!' : 'Copy code'}
+      aria-label={copied ? 'Copied!' : 'Copy code'}
+    >
+      {copied ? (
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+        </svg>
+      ) : (
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+        </svg>
+      )}
+    </button>
+  )
+}
+
+// Syntax highlighted code block component
+const HighlightedCodeBlock = ({ code, language }: { code: string, language: string }) => {
+  const [highlightedHtml, setHighlightedHtml] = useState<string | null>(null)
+  
+  useEffect(() => {
+    const highlight = async () => {
+      try {
+        const html = await codeToHtml(code, {
+          lang: language || 'text',
+          theme: 'github-light',
+        })
+        setHighlightedHtml(html)
+      } catch (err) {
+        // If language is not supported, fallback to plain text
+        try {
+          const html = await codeToHtml(code, {
+            lang: 'text',
+            theme: 'github-light',
+          })
+          setHighlightedHtml(html)
+        } catch {
+          setHighlightedHtml(null)
+        }
+      }
+    }
+    highlight()
+  }, [code, language])
+  
+  return (
+    <div className="mt-6 rounded-lg border border-rurikon-100 overflow-hidden">
+      <div className="bg-rurikon-50 px-4 py-1.5 border-b border-rurikon-100 flex items-center justify-between">
+        <span className="text-xs font-medium text-rurikon-400 uppercase tracking-wide">
+          {language || 'code'}
+        </span>
+        <CopyButton code={code} />
+      </div>
+      {highlightedHtml ? (
+        <div 
+          className="shiki-wrapper overflow-x-auto text-sm leading-relaxed [&_pre]:p-4 [&_pre]:m-0 [&_pre]:bg-[#fafafa] [&_code]:font-mono"
+          dangerouslySetInnerHTML={{ __html: highlightedHtml }}
+        />
+      ) : (
+        <pre className="p-4 overflow-x-auto text-sm leading-relaxed bg-[#fafafa]">
+          <code className="font-mono block">{code}</code>
+        </pre>
+      )}
+    </div>
+  )
+}
 
 // Shortcode component: Alert
 const Alert = ({ type = 'info', children }: { type?: 'info' | 'warning' | 'error' | 'success', children?: React.ReactNode }) => {
@@ -206,33 +291,60 @@ export default function MarkdownRenderer({ children }: MarkdownRendererProps) {
         {...props}
       />
     ),
-    pre: (props: any) => (
-      <pre className='whitespace-pre md:whitespace-pre-wrap' {...props} />
-    ),
-    code: ({ className, children, ...props }: any) => {
-      const match = /language-(\w+)/.exec(className || '')
-      const language = match ? match[1] : ''
-
-      if (typeof children === 'string' && match) {
-        // This is a code block with enhanced styling
+    pre: ({ children, ...props }: any) => {
+      // Extract code content and language from children
+      let codeContent = ''
+      let language = ''
+      
+      React.Children.forEach(children, (child) => {
+        if (React.isValidElement(child) && child.props) {
+          const childProps = child.props as any
+          if (typeof childProps.children === 'string') {
+            codeContent = childProps.children
+          }
+          const match = /language-(\w+)/.exec(childProps.className || '')
+          if (match) {
+            language = match[1]
+          }
+        }
+      })
+      
+      // If we have code content and language, use the highlighted code block
+      if (codeContent && language) {
+        return <HighlightedCodeBlock code={codeContent} language={language} />
+      }
+      
+      // Fallback for code blocks without language
+      if (codeContent) {
         return (
           <div className="mt-6 rounded-lg border border-rurikon-100 overflow-hidden">
-            {language && (
-              <div className="bg-rurikon-50 px-4 py-1.5 border-b border-rurikon-100">
-                <span className="text-xs font-medium text-rurikon-400 uppercase tracking-wide">
-                  {language}
-                </span>
-              </div>
-            )}
-            <pre className="p-4 overflow-x-auto text-sm leading-relaxed bg-[#fafafa]">
-              <code 
-                className={`${className} font-mono block`}
-                {...props}
-              >
-                {children}
-              </code>
+            <div className="bg-rurikon-50 px-4 py-1.5 border-b border-rurikon-100 flex items-center justify-between">
+              <span className="text-xs font-medium text-rurikon-400 uppercase tracking-wide">
+                code
+              </span>
+              <CopyButton code={codeContent} />
+            </div>
+            <pre className="p-4 overflow-x-auto text-sm leading-relaxed bg-[#fafafa]" {...props}>
+              {children}
             </pre>
           </div>
+        )
+      }
+      
+      return <pre className='whitespace-pre md:whitespace-pre-wrap p-4 overflow-x-auto' {...props}>{children}</pre>
+    },
+    code: ({ className, children, ...props }: any) => {
+      const match = /language-(\w+)/.exec(className || '')
+
+      if (typeof children === 'string' && match) {
+        // This is inside a code block - pre component handles the highlighting
+        return (
+          <code 
+            className={`${className} font-mono block`}
+            {...props}
+          >
+            {children}
+          </code>
         )
       }
 
