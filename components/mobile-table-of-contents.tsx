@@ -88,6 +88,19 @@ export default function MobileTableOfContents() {
     }
   }, [headers])
 
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [isOpen])
+
   const handleLinkClick = (
     e: React.MouseEvent<HTMLAnchorElement>,
     id: string
@@ -101,12 +114,6 @@ export default function MobileTableOfContents() {
       window.history.pushState(null, '', `#${id}`)
     }
     setIsOpen(false) // Close the panel after clicking
-  }
-
-  const handleOverlayClick = (e: React.MouseEvent) => {
-    if (e.target === e.currentTarget) {
-      setIsOpen(false)
-    }
   }
 
   // Don't render if there are fewer than 3 headers
@@ -127,22 +134,18 @@ export default function MobileTableOfContents() {
 
       {/* Overlay and slide-up panel */}
       {isOpen && (
-        <div
-          className="fixed inset-0 z-50 lg:hidden"
-          onClick={handleOverlayClick}
-        >
-          {/* Backdrop */}
+        <>
+          {/* Backdrop - separate fixed element */}
           <div 
-            className={cn(
-              "absolute inset-0 bg-black transition-opacity duration-300",
-              isOpen ? "opacity-25" : "opacity-0"
-            )}
+            className="fixed inset-0 z-50 lg:hidden bg-black/25"
+            onClick={() => setIsOpen(false)}
+            aria-hidden="true"
           />
           
           {/* Slide-up panel */}
           <div 
             className={cn(
-              "absolute bottom-0 left-0 right-0 bg-white border-t border-rurikon-200 rounded-t-2xl transition-transform duration-300 ease-out transform font-sans",
+              "fixed bottom-0 left-0 right-0 z-50 lg:hidden bg-white border-t border-rurikon-200 rounded-t-2xl transition-transform duration-300 ease-out transform font-sans",
               isOpen ? "translate-y-0" : "translate-y-full"
             )}
             style={{ 
@@ -215,7 +218,7 @@ export default function MobileTableOfContents() {
               </nav>
             </div>
           </div>
-        </div>
+        </>
       )}
     </>
   )
