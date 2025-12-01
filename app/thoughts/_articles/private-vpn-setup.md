@@ -27,7 +27,7 @@ First, go to [digitalocean.com](https://digitalocean.com) and log in to your acc
 
 Now follow these instructions step by step:
 
-1. First we need to choose a region. You can choose whicevery you want, but it is best to choose a country that is closes to where you live. Lets choose Amsterdam.
+1. First we need to choose a region. You can choose whicever you want, but it is best to choose a country that is closes to where you live. Lets choose Amsterdam.
    ::img{src="Pasted image 20251127225609.png" alt="Region selection" caption="Region selection"}
 2. You do not need to change Datacenter
 3. Now we need to select an image. In this example we will continue with Ubuntu. Leave the latest version that is preselected for you. 
@@ -53,11 +53,9 @@ Now follow these instructions step by step:
        ::img{src="Pasted image 20251201191417.png" alt="Passphrase prompt" caption="Enter a strong passphrase"}
        Congratulations: You now have your private and public keys. 
     3. In the same CMD window, use the `type` command to get the public key (you will put this on the VPS). 
-    
-         **Note: Replace `YOUR_USERNAME` with your actual Windows username.**
        
        ```bash
-       type C:\Users\YOUR_USERNAME\.ssh\test-vpn-setup-key.pub
+       type %USERPROFILE%\.ssh\test-vpn-setup-key.pub
        ```
     4. Copy the entire output, which will look like this: `ssh-ed25519 AAAA...[long_string_of_characters]...== user@hostname`
        ::img{src="Pasted image 20251201191650.png" alt="Public key output" caption="Copy the entire public key output"}
@@ -73,7 +71,7 @@ Now follow these instructions step by step:
    **Note: Replace `YOUR_DROPLET_IP` with your actual Droplet IP address.**
 
    ```bash
-   C:\Windows\System32\OpenSSH\ssh -i ~/.ssh/test-vpn-setup-key root@YOUR_DROPLET_IP
+   C:\Windows\System32\OpenSSH\ssh -i %USERPROFILE%\.ssh\test-vpn-setup-key root@YOUR_DROPLET_IP
    ```
    Then enter the passphrase you set, then you will be connected.
    ::img{src="Pasted image 20251201192453.png" alt="SSH connection" caption="Connected to your VPS"}
@@ -134,6 +132,8 @@ echo "Private: $CLIENT_2_PRIVATE_KEY"
 echo "Public: $CLIENT_2_PUBLIC_KEY"
 ```
 
+::img{src="Pasted image 20251201200110.png" alt="Generated client keys" caption="Generated client keys for two devices"}
+
 ## Step 5: Creating Server Configurations
 
 This ensures that the server will only accept traffic that has been cryptographically signed by the corresponding secret **Private Key** held by that specific client.
@@ -164,6 +164,8 @@ AllowedIPs = 10.0.0.3/32
 
 EOF
 ```
+
+::img{src="Pasted image 20251201200431.png" alt="Server configuration file" caption="Server configuration file with two clients"}
 
 ## Step 6: Create Client Configuration Files
 
@@ -210,6 +212,9 @@ AllowedIPs = 0.0.0.0/0
 PersistentKeepalive = 25
 EOF
 ```
+::img{src="Pasted image 20251201201021.png" alt="Client configuration files" caption="Generated client configuration files"}
+
+**Note: Make sure to replace `YOUR_DROPLET_IP` with the actual IP address of your DigitalOcean Droplet in both client configuration files.**
 
 ## Step 7: Start WireGuard Server
 
@@ -225,6 +230,7 @@ sudo systemctl enable wg-quick@wg0
 # Verify it's running
 sudo wg show
 ```
+::img{src="Pasted image 20251201201319.png" alt="WireGuard status" caption="WireGuard server is up and running"}
 
 ## Step 8: Configure Firewall
 
@@ -234,7 +240,34 @@ sudo ufw allow 51820/udp
 
 # Verify firewall status
 sudo ufw status
+
+# Allow SSH (do this BEFORE enabling UFW)
+sudo ufw allow 22/tcp
+
+# Then enable the firewall
+sudo ufw enable
 ```
+
+You'll see a prompt like:
+
+```txt
+Command may disrupt existing ssh connections. Proceed with operation (y|n)?
+
+
+Type `y` and press Enter.
+
+Now when you check the status, you should see:
+
+Status: active
+
+To                         Action      From
+--                         ------      ----
+51820/udp                  ALLOW       Anywhere
+51820/udp (v6)             ALLOW       Anywhere (v6)
+
+```
+
+::img{src="Pasted image 20251201201959.png" alt="Firewall status" caption="Firewall configured to allow WireGuard and SSH traffic"}
 
 ## Step 9: Download Client Configuration Files
 
@@ -242,12 +275,18 @@ Now, we need to download the `.conf` files from the remote server (your Droplet)
 
 1. Open a new terminal window or Command Prompt **on your local computer**.
 2. You will use your server's public IP address, the user you use to SSH (e.g., root), and the specific file names. The files were saved in the home directory (~) on the server.
-3. Run the following commands to download both `.conf` files (replace `your_droplets_ip_address` with your actual IP):
+3. Run the following commands to download both `.conf` files (replace `YOUR_DROPLET_IP` with your actual IP):
 	```bash
-	scp root@your_droplets_ip_address:~/client1.conf ./client1.conf
-	scp root@your_droplets_ip_address:~/client2.conf ./client2.conf
+	C:\Windows\System32\OpenSSH\scp -i %USERPROFILE%\.ssh\test-vpn-setup-key root@YOUR_DROPLET_IP:~/client1.conf %USERPROFILE%\Downloads\client1.conf
+
+	C:\Windows\System32\OpenSSH\scp -i %USERPROFILE%\.ssh\test-vpn-setup-key root@YOUR_DROPLET_IP:~/client2.conf %USERPROFILE%\Downloads\client2.conf
+
 	```
-4. After entering the command, you will be prompted for your SSH password (or asked to use your SSH key if set up). The file will be copied to your current directory (./) on your local machine.
+4. After entering the command, you will be prompted for your SSH passphrase (or asked to use your SSH key if set up). The file will be copied to your current directory (./) on your local machine.
+
+::img{src="Pasted image 20251201202658.png" alt="SCP file transfer" caption="Downloading client configuration files using SCP"}
+
+::img{src="Pasted image 20251201202919.png" alt="Downloaded configuration files" caption="Client configuration files downloaded to local machine"}
 
 ## Step 10: Set Up Client Devices
 1. Download WireGuard from [wireguard.com](https://www.wireguard.com/install/)
@@ -255,8 +294,21 @@ Now, we need to download the `.conf` files from the remote server (your Droplet)
 3. Click "Import tunnel(s) from file".
 4. Select your `.conf` file.
 5. Click "Activate" to connect.
-	::img{src=".png" alt="WireGuard client interface" caption="WireGuard client interface after importing configuration"}
 
+   ::img{src="Pasted image 20251201203223.png" alt="Import tunnel" caption="Importing tunnel configuration in WireGuard client"}
+
+	::img{src="Pasted image 20251201203401.png" alt="WireGuard client interface" caption="WireGuard client interface after importing configuration"}
+
+## Step 11: Verify Connection
+To verify that your VPN connection is active and working correctly, you can check your IP address before and after connecting to the VPN.
+1. Before connecting to the VPN, visit [whatismyipaddress.com](https://whatismyipaddress.com/) to see your current public IP address.
+
+::img{src="Pasted image 20251201203742.png" alt="IP address before VPN" caption="Checking IP address before connecting to VPN"}
+
+2. Connect to the VPN using the WireGuard client.
+3. After connecting, revisit [whatismyipaddress.com](https://whatismyipaddress.com/) to see if your IP address has changed to the one assigned by your VPN server.
+
+::img{src="Pasted image 20251201203638.png" alt="IP address verification" caption="Verifying IP address change after connecting to VPN"}
 ## Glossary
 - **Image**: An Image is essentially a complete, pre-configured snapshot or blueprint of a virtual server's hard disk. When you create a Droplet (or any Virtual Machine/VPS), you launch it from an image. It's a bundle of all the necessary software to run a server, including: Operating System (OS), File System Structure, Pre-Installed Software (i.e., Git), and Configuration Settings.
 - **SSH**: SSH (Secure Shell) is the primary protocol used to securely connect to and manage a Linux-based VPS or Droplet remotely. When you choose SSH Key, you are configuring the server to use **a pair of keys for authentication**:

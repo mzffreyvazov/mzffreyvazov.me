@@ -10,6 +10,100 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { codeToHtml } from 'shiki'
 
+// Image Lightbox Modal Component
+const ImageLightbox = ({ 
+  src, 
+  alt, 
+  isOpen, 
+  onClose 
+}: { 
+  src: string
+  alt: string
+  isOpen: boolean
+  onClose: () => void 
+}) => {
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose()
+    }
+    
+    if (isOpen) {
+      document.addEventListener('keydown', handleEscape)
+      document.body.style.overflow = 'hidden'
+    }
+    
+    return () => {
+      document.removeEventListener('keydown', handleEscape)
+      document.body.style.overflow = 'unset'
+    }
+  }, [isOpen, onClose])
+
+  if (!isOpen) return null
+
+  return (
+    <div 
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm cursor-zoom-out p-4 md:p-8"
+      onClick={onClose}
+    >
+      <button
+        onClick={onClose}
+        className="absolute top-4 right-4 p-2 text-white/80 hover:text-white transition-colors z-50"
+        aria-label="Close lightbox"
+      >
+        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+      {/* Using native img for lightbox to allow natural scaling */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={src}
+        alt={alt}
+        className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
+        onClick={(e) => e.stopPropagation()}
+      />
+    </div>
+  )
+}
+
+// Clickable Image Component with Lightbox
+const ClickableImage = ({ 
+  src, 
+  alt, 
+  width = 800, 
+  height = 600, 
+  className = '' 
+}: { 
+  src: string
+  alt: string
+  width?: number
+  height?: number
+  className?: string 
+}) => {
+  const [isOpen, setIsOpen] = useState(false)
+
+  return (
+    <>
+      <Image
+        src={src}
+        alt={alt}
+        width={width}
+        height={height}
+        quality={95}
+        draggable={false}
+        className={`${className} cursor-zoom-in hover:opacity-90 transition-opacity`}
+        onClick={() => setIsOpen(true)}
+      />
+      <ImageLightbox
+        src={src}
+        alt={alt}
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+      />
+    </>
+  )
+}
+
 // Copy button component for code blocks
 const CopyButton = ({ code }: { code: string }) => {
   const [copied, setCopied] = useState(false)
@@ -117,13 +211,11 @@ const ImageEmbed = ({ src, alt, caption, width }: { src: string, alt?: string, c
   
   return (
     <figure className="mt-7">
-      <Image
+      <ClickableImage
         src={imageSrc}
         alt={alt || caption || ''}
         width={imageWidth}
         height={Math.round(imageWidth * 0.75)}
-        quality={95}
-        draggable={false}
         className="rounded-sm"
       />
       {caption && (
@@ -365,14 +457,12 @@ export default function MarkdownRenderer({ children }: MarkdownRendererProps) {
       const imageSrc = src?.startsWith('https://') || src?.startsWith('http://') ? src : `/assets/images/${src}`
 
       const img = (
-        <Image
-          className='rounded-sm'
+        <ClickableImage
           src={imageSrc}
           alt={alt || ''}
           width={800}
           height={600}
-          quality={95}
-          draggable={false}
+          className="rounded-sm"
         />
       )
 
