@@ -308,7 +308,7 @@ To verify that your VPN connection is active and working correctly, you can chec
 2. Connect to the VPN using the WireGuard client.
 3. After connecting, revisit [whatismyipaddress.com](https://whatismyipaddress.com/) to see if your IP address has changed to the one assigned by your VPN server.
 
-::img{src="Pasted image 20251201203638.png" alt="IP address verification" caption="Verifying IP address change after connecting to VPN"}
+::img{src="Pasted image 20251201203638.png" alt="IP address verification" caption="Verifying IP address change after connecting to VPN. Since we created the server in Amsterdam, the IP reflects that location."}
 ## Glossary
 - **Image**: An Image is essentially a complete, pre-configured snapshot or blueprint of a virtual server's hard disk. When you create a Droplet (or any Virtual Machine/VPS), you launch it from an image. It's a bundle of all the necessary software to run a server, including: Operating System (OS), File System Structure, Pre-Installed Software (i.e., Git), and Configuration Settings.
 - **SSH**: SSH (Secure Shell) is the primary protocol used to securely connect to and manage a Linux-based VPS or Droplet remotely. When you choose SSH Key, you are configuring the server to use **a pair of keys for authentication**:
