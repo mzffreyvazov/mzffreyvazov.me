@@ -9,7 +9,7 @@ hidden: false
 
 # Setting up a Private VPN Server for Free
 
-In this blog post, I will explain how you can set up a private VPN server for your devices on DigitalOcean. For this purpose, I chose DigitalOcean because the GitHub Student Pack offers **$200 in free credits** for one year (of course, this applies if you have a valid student email), which means it'll cost you no money to set up the server.
+In this blog post, I will explain how you can set up a private VPN server for your devices on DigitalOcean. For this purpose, I chose DigitalOcean because the [GitHub Student Pack](https://education.github.com/pack) offers **$200 in free credits** for one year (of course, this applies if you have a valid student email), which means it'll cost you no money to set up the server.
 
 Basic definitions before we begin:
 - **DigitalOcean**: A cloud computing platform and infrastructure provider.
@@ -27,49 +27,56 @@ First, go to [digitalocean.com](https://digitalocean.com) and log in to your acc
 
 Now follow these instructions step by step:
 
-1. First, we need to choose a region. You can choose whichever you want, but it is best to choose a country that is closest to where you live. Let's choose Amsterdam.
-    ::img{src="Pasted image 20251127225609.png" alt="Region selection" caption="Region selection"}
-2. You do not need to change the Datacenter.
-3. Now we need to select an image. In this example, we will continue with Ubuntu. Leave the latest version that is preselected for you.
-    ::img{src="Pasted image 20251127230328.png" alt="Ubuntu Image Selection" caption="Selecting the Ubuntu image — choose the latest stable/LTS release for best support and stability."}
-4. Now let's choose the size. A basic droplet type will suffice for now.
+1. First we need to choose a region. You can choose whicevery you want, but it is best to choose a country that is closes to where you live. Lets choose Amsterdam.
+   ::img{src="Pasted image 20251127225609.png" alt="Region selection" caption="Region selection"}
+2. You do not need to change Datacenter
+3. Now we need to select an image. In this example we will continue with Ubuntu. Leave the latest version that is preselected for you. 
+   ::img{src="Pasted image 20251127230328.png" alt="Ubuntu Image Selection" caption="Selecting the Ubuntu image"}
+4. Now let's choose the size. A basic droplet type will suffice us for now. 
    ::img{src="Pasted image 20251127230423.png" alt="Droplet size selection" caption="Choosing a basic droplet size"}
-5. We do not need additional storage and backups.
-6. Now, we need to choose an authentication method. I **suggest you choose** SSH key, which will make it a lot easier for us to connect to and work with the virtual machine. Follow the steps below to configure your SSH Authentication:
-   ::img{src="Pasted image 20251127231150.png" alt="SSH Authentication" caption="SSH authentication method selection"}
-    1. On your computer, open CMD and generate an SSH key pair:
+5. We do not need additional storage and backups
+6. Now, we need to choose an authentication method, I suggest you to choose SSH key, which will make it a lot easier for us to connect to and work with the virtual machine. Follow the steps below to configure your SSH Authentication:
+   ::img{src="Pasted image 20251201192914.png" alt="SSH Authentication" caption="SSH authentication method selection"}
+    1. On your computer, open cmd and generate a SSH key pair:
        ```bash
-       ssh-keygen -t ed25519
+       ssh-keygen -t [ALGORITHM] -C "[YOUR COMMENT]" -f [PATH/YOUR_FILE_NAME]
        ```
-        If this doesn't work, try the full path:
-        ```bash
-        C:\Windows\System32\OpenSSH\ssh-keygen -t ed25519
-        ```
-    2. Press Enter to accept the default file path to save the keys.
-    3. Enter a strong passphrase when prompted.
+       So the actual command we are going to use will be like this:
+       ```bash
+       ssh-keygen -t ed25519 -C "test-vpn-setup" -f %USERPROFILE%\.ssh\test-vpn-setup-key
+       ```
+       If this doesn't work, then try the full path:
+       ```bash
+       C:\Windows\System32\OpenSSH\ssh-keygen -t ed25519 -C "test-vpn-setup" -f %USERPROFILE%\.ssh\test-vpn-setup-key
+       ```
+    2. Enter a strong passphrase when prompted:
+       ::img{src="Pasted image 20251201191417.png" alt="Passphrase prompt" caption="Enter a strong passphrase"}
+       Congratulations: You now have your private and public keys. 
+    3. In the same CMD window, use the `type` command to get the public key (you will put this on the VPS). 
+    
+         **Note: Replace `YOUR_USERNAME` with your actual Windows username.**
        
-       Congratulations: You now have your private and public keys.
-    4. In the same CMD window, use the `type` command to get the public key (you will put this on the VPS). **Note: Replace `YourUsername` with your actual Windows username.**
        ```bash
-       type C:\Users\YourUsername\.ssh\id_ed25519.pub
+       type C:\Users\YOUR_USERNAME\.ssh\test-vpn-setup-key.pub
        ```
-       Alternatively, you can use:
-       ```bash
-       type %USERPROFILE%\.ssh\id_ed25519.pub
-       ```
-    5. Copy the entire output, which will look like this: `ssh-ed25519 AAAA...[long_string_of_characters]...== user@hostname`
-    6. On the Droplet creation page, click on `Add SSH Key`:
+    4. Copy the entire output, which will look like this: `ssh-ed25519 AAAA...[long_string_of_characters]...== user@hostname`
+       ::img{src="Pasted image 20251201191650.png" alt="Public key output" caption="Copy the entire public key output"}
+    5. On the Droplet creation page, click on `Add SSH Key`: 
        ::img{src="Pasted image 20251127233000.png" alt="Add SSH Key button" caption="Click Add SSH Key"}
-    7. Add the SSH key you previously copied in the opened window:
+    6. Add the SSH key you previously copied in the opened window: 
        ::img{src="Pasted image 20251127233109.png" alt="SSH key input window" caption="Paste your SSH public key"}
 7. Once you set up the SSH authentication, click on `Create Droplet`:
    ::img{src="Pasted image 20251127233243.png" alt="Create Droplet button" caption="Click Create Droplet to finish setup"}
-8. Congratulations! You now have your own **VPS**. We will continue setting up and configuring the actual VPN server.
-9. You can now connect to your VM using this command in CMD on your local machine:
+8. Congratulations, now you have your own VPS server. We will continue setting up and configuring the actual VPN server.
+9. You can now connect to your VM using this command in CMD in your local machine:
+   
+   **Note: Replace `YOUR_DROPLET_IP` with your actual Droplet IP address.**
+
    ```bash
-   ssh root@your_droplet_ip_address
+   C:\Windows\System32\OpenSSH\ssh -i ~/.ssh/test-vpn-setup-key root@YOUR_DROPLET_IP
    ```
-   Enter the passphrase you set, and you will be connected.
+   Then enter the passphrase you set, then you will be connected.
+   ::img{src="Pasted image 20251201192453.png" alt="SSH connection" caption="Connected to your VPS"}
 
 
 ## Step 2: Install WireGuard
@@ -248,6 +255,7 @@ Now, we need to download the `.conf` files from the remote server (your Droplet)
 3. Click "Import tunnel(s) from file".
 4. Select your `.conf` file.
 5. Click "Activate" to connect.
+	::img{src=".png" alt="WireGuard client interface" caption="WireGuard client interface after importing configuration"}
 
 ## Glossary
 - **Image**: An Image is essentially a complete, pre-configured snapshot or blueprint of a virtual server's hard disk. When you create a Droplet (or any Virtual Machine/VPS), you launch it from an image. It's a bundle of all the necessary software to run a server, including: Operating System (OS), File System Structure, Pre-Installed Software (i.e., Git), and Configuration Settings.
