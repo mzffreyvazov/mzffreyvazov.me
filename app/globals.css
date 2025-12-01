@@ -1,5 +1,10 @@
 @import 'tailwindcss';
 
+/* Enable smooth scrolling for anchor links */
+html {
+  scroll-behavior: smooth;
+}
+
 @layer utilities {
   .font-thin {
     font-variation-settings: 'wght' 100, var(--sans-variation);

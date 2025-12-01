@@ -30,32 +30,44 @@ Now follow these instructions step by step:
 1. First, we need to choose a region. You can choose whichever you want, but it is best to choose a country that is closest to where you live. Let's choose Amsterdam.
    ::img{src="Pasted image 20251127225609.png" alt="Region selection" caption="Region selection"}
 2. You do not need to change the Datacenter.
-3. Now we need to select an image. In this example, we will continue with Ubuntu. Leave the latest version that is preselected for you. 
+3. Now we need to select an [image](#glossary). In this example, we will continue with Ubuntu. Leave the latest version that is preselected for you. 
    ::img{src="Pasted image 20251127230328.png" alt="Ubuntu Image Selection" caption="Selecting the Ubuntu image"}
 4. Now let's choose the size. A basic droplet type will suffice for now. 
    ::img{src="Pasted image 20251127230423.png" alt="Droplet size selection" caption="Choosing a basic droplet size"}
 5. We do not need additional storage and backups.
-6. Now, we need to choose an authentication method. I suggest you choose SSH key, which will make it a lot easier for us to connect to and work with the virtual machine. Follow the steps below to configure your SSH Authentication:
+6. Now, we need to choose an authentication method. I suggest you choose [SSH](#glossary) key, which will make it a lot easier for us to connect to and work with the virtual machine. Follow the steps below to configure your SSH Authentication:
    ::img{src="Pasted image 20251201192914.png" alt="SSH Authentication" caption="SSH authentication method selection"}
-    1. On your computer, open CMD and generate an SSH key pair:
+    1. On your computer, open a terminal and generate an SSH key pair:
        ```bash
        ssh-keygen -t [ALGORITHM] -C "[YOUR COMMENT]" -f [PATH/YOUR_FILE_NAME]
        ```
-       So the actual command we are going to use will be like this:
+       
+       **Windows (CMD):**
        ```bash
        ssh-keygen -t ed25519 -C "test-vpn-setup" -f %USERPROFILE%\.ssh\test-vpn-setup-key
        ```
-       If this doesn't work, then try the full path:
+       If this doesn't work, try the full path:
        ```bash
        C:\Windows\System32\OpenSSH\ssh-keygen -t ed25519 -C "test-vpn-setup" -f %USERPROFILE%\.ssh\test-vpn-setup-key
+       ```
+       
+       **Linux/macOS (Terminal):**
+       ```bash
+       ssh-keygen -t ed25519 -C "test-vpn-setup" -f ~/.ssh/test-vpn-setup-key
        ```
     2. Enter a strong passphrase when prompted:
        ::img{src="Pasted image 20251201191417.png" alt="Passphrase prompt" caption="Enter a strong passphrase"}
        Congratulations! You now have your private and public keys. 
-    3. In the same CMD window, use the `type` command to get the public key (you will put this on the VPS). 
+    3. In the same terminal window, display the public key (you will put this on the VPS):
        
+       **Windows (CMD):**
        ```bash
        type %USERPROFILE%\.ssh\test-vpn-setup-key.pub
+       ```
+       
+       **Linux/macOS (Terminal):**
+       ```bash
+       cat ~/.ssh/test-vpn-setup-key.pub
        ```
     4. Copy the entire output, which will look like this: `ssh-ed25519 AAAA...[long_string_of_characters]...== user@hostname`
        ::img{src="Pasted image 20251201191650.png" alt="Public key output" caption="Copy the entire public key output"}
@@ -66,13 +78,20 @@ Now follow these instructions step by step:
 7. Once you set up the SSH authentication, click on `Create Droplet`:
    ::img{src="Pasted image 20251127233243.png" alt="Create Droplet button" caption="Click Create Droplet to finish setup"}
 8. Congratulations! Now you have your own VPS. We will continue setting up and configuring the actual VPN server.
-9. You can now connect to your VM using this command in CMD on your local machine:
+9. You can now connect to your VM using this command in your terminal:
    
    **Note: Replace `YOUR_DROPLET_IP` with your actual Droplet IP address.**
 
+   **Windows (CMD):**
    ```bash
    C:\Windows\System32\OpenSSH\ssh -i %USERPROFILE%\.ssh\test-vpn-setup-key root@YOUR_DROPLET_IP
    ```
+   
+   **Linux/macOS (Terminal):**
+   ```bash
+   ssh -i ~/.ssh/test-vpn-setup-key root@YOUR_DROPLET_IP
+   ```
+   
    Then enter the passphrase you set, and you will be connected.
    ::img{src="Pasted image 20251201192453.png" alt="SSH connection" caption="Connected to your VPS"}
 
@@ -276,13 +295,22 @@ Now, we need to download the `.conf` files from the remote server (your Droplet)
 1. Open a new terminal window or Command Prompt **on your local computer**.
 2. You will use your server's public IP address, the user you use to SSH (e.g., root), and the specific file names. The files were saved in the home directory (~) on the server.
 3. Run the following commands to download both `.conf` files (replace `YOUR_DROPLET_IP` with your actual IP):
-	```bash
-	C:\Windows\System32\OpenSSH\scp -i %USERPROFILE%\.ssh\test-vpn-setup-key root@YOUR_DROPLET_IP:~/client1.conf %USERPROFILE%\Downloads\client1.conf
 
-	C:\Windows\System32\OpenSSH\scp -i %USERPROFILE%\.ssh\test-vpn-setup-key root@YOUR_DROPLET_IP:~/client2.conf %USERPROFILE%\Downloads\client2.conf
+   **Windows (CMD):**
+   ```bash
+   C:\Windows\System32\OpenSSH\scp -i %USERPROFILE%\.ssh\test-vpn-setup-key root@YOUR_DROPLET_IP:~/client1.conf %USERPROFILE%\Downloads\client1.conf
 
-	```
-4. After entering the command, you will be prompted for your SSH passphrase (or asked to use your SSH key if set up). The file will be copied to your current directory (./) on your local machine.
+   C:\Windows\System32\OpenSSH\scp -i %USERPROFILE%\.ssh\test-vpn-setup-key root@YOUR_DROPLET_IP:~/client2.conf %USERPROFILE%\Downloads\client2.conf
+   ```
+   
+   **Linux/macOS (Terminal):**
+   ```bash
+   scp -i ~/.ssh/test-vpn-setup-key root@YOUR_DROPLET_IP:~/client1.conf ~/Downloads/client1.conf
+
+   scp -i ~/.ssh/test-vpn-setup-key root@YOUR_DROPLET_IP:~/client2.conf ~/Downloads/client2.conf
+   ```
+
+4. After entering the command, you will be prompted for your SSH passphrase (or asked to use your SSH key if set up). The file will be copied to your Downloads folder on your local machine.
 
 ::img{src="Pasted image 20251201202658.png" alt="SCP file transfer" caption="Downloading client configuration files using SCP"}
 
@@ -297,7 +325,7 @@ Now, we need to download the `.conf` files from the remote server (your Droplet)
 
    ::img{src="Pasted image 20251201203223.png" alt="Import tunnel" caption="Importing tunnel configuration in WireGuard client"}
 
-	::img{src="Pasted image 20251201204550.png" alt="WireGuard client interface" caption="WireGuard client interface after importing configuration"}
+	::img{src="Pasted image 20251201212816.png" alt="WireGuard client interface" caption="WireGuard client interface after importing configuration"}
 
 ## Step 11: Verify Connection
 To verify that your VPN connection is active and working correctly, you can check your IP address before and after connecting to the VPN.
