@@ -89,8 +89,10 @@ const ClickableImage = ({
         alt={alt}
         width={width}
         height={height}
-        quality={95}
+        quality={75}
         draggable={false}
+        loading="lazy"
+        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 800px"
         className={`${className} cursor-zoom-in hover:opacity-90 transition-opacity`}
         onClick={() => setIsOpen(true)}
       />
