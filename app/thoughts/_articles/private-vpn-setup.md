@@ -1,6 +1,6 @@
 ---
 title: "Setting up a Private VPN Server for Free"
-date: "2025.11.24"
+date: "2025.12.01"
 tags:
     - programming
 description: ""
