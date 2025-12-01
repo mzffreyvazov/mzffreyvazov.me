@@ -297,7 +297,7 @@ Now, we need to download the `.conf` files from the remote server (your Droplet)
 
    ::img{src="Pasted image 20251201203223.png" alt="Import tunnel" caption="Importing tunnel configuration in WireGuard client"}
 
-	::img{src="Pasted image 20251201203401.png" alt="WireGuard client interface" caption="WireGuard client interface after importing configuration"}
+	::img{src="Pasted image 20251201204550.png" alt="WireGuard client interface" caption="WireGuard client interface after importing configuration"}
 
 ## Step 11: Verify Connection
 To verify that your VPN connection is active and working correctly, you can check your IP address before and after connecting to the VPN.
