@@ -251,6 +251,14 @@ article {
       opacity: 0;
       animation: appear .6s ease 0.2s forwards;
     }
+
+    ::view-transition-image-pair(crossfade) {
+      isolation: auto;
+    }
+
+    ::view-transition-group(crossfade) {
+      animation-timing-function: ease;
+    }
   }
 }
 
