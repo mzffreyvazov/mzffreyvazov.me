@@ -31,7 +31,7 @@ export default function TransitionLink({
     }
 
     // Check if browser supports view transitions
-    if (!document.startViewTransition) {
+    if (!('startViewTransition' in document)) {
       return
     }
 
