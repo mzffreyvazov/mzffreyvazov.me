@@ -3,6 +3,7 @@ import type { Metadata, Viewport } from 'next'
 import cn from 'clsx'
 import localFont from 'next/font/local'
 import 'katex/dist/katex.min.css'
+import { Analytics } from "@vercel/analytics/next"
 
 import Navbar from '@/components/navbar'
 import ViewTransition from '@/components/view-transition'
@@ -69,6 +70,7 @@ export default function RootLayout({
             </ViewTransition>
           </main>
         </div>
+        <Analytics />
       </body>
     </html>
   )
