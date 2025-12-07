@@ -6,7 +6,7 @@ import ReactMarkdown from 'react-markdown'
 import remarkDirective from 'remark-directive'
 import { visit } from 'unist-util-visit'
 import { BlockSideTitle } from '@/components/block-sidetitle'
-import Link from 'next/link'
+import Link from '@/components/transition-link'
 import Image from 'next/image'
 import { codeToHtml } from 'shiki'
 

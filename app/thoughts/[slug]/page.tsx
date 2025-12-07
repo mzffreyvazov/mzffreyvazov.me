@@ -2,7 +2,7 @@
 import { promises as fs } from 'fs'
 import path from 'path'
 import React, { Fragment } from 'react'
-import Link from 'next/link'
+import Link from '@/components/transition-link'
 import { notFound } from 'next/navigation'
 import cn from 'clsx'
 import TocFloatingButton from '@/components/toc-floating-button'

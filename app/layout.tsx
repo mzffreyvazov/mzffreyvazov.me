@@ -1,13 +1,11 @@
 import type { Metadata, Viewport } from 'next'
 
-// @ts-expect-error types are not available yet?
-import { unstable_ViewTransition as ViewTransition } from 'react'
-
 import cn from 'clsx'
 import localFont from 'next/font/local'
 import 'katex/dist/katex.min.css'
 
 import Navbar from '@/components/navbar'
+import ViewTransition from '@/components/view-transition'
 import './globals.css'
 
 const sans = localFont({
