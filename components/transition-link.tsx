@@ -37,7 +37,12 @@ export default function TransitionLink({
 
     e.preventDefault()
 
-    document.startViewTransition(() => {
+    // Type cast for View Transition API
+    const doc = document as Document & {
+      startViewTransition: (callback: () => void) => void
+    }
+
+    doc.startViewTransition(() => {
       router.push(url)
     })
   }
