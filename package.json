@@ -19,7 +19,7 @@
     "clsx": "^2.1.0",
     "gray-matter": "^4.0.3",
     "katex": "^0.16.12",
-    "next": "15.3.0-canary.19",
+    "next": "15.6.0-canary.58",
     "next-mdx-remote": "^4.4.1",
     "react": "0.0.0-experimental-e1e74071-20250321",
     "react-dom": "0.0.0-experimental-e1e74071-20250321",
