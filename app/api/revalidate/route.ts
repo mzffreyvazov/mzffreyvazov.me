@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
     // Revalidate by tags (useful for related content)
     if (tags && Array.isArray(tags)) {
       for (const tag of tags) {
-        revalidateTag(tag)
+        revalidateTag(tag, {})
         console.log(`Revalidated tag: ${tag}`)
       }
     }
