@@ -1,0 +1,21 @@
+{
+  "version": 3,
+  "createdAt": "2026-03-09T23:12:39.149Z",
+  "workspaces": [
+    {
+      "name": "default",
+      "title": "mzffreyvazov.me",
+      "basePath": "/studio",
+      "projectId": "uuxy2e86",
+      "dataset": "production",
+      "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 32 32\"><rect width=\"32\" height=\"32\" rx=\"2\" fill=\"#fa6400\"></rect><text x=\"50%\" y=\"50%\" text-anchor=\"middle\" alignment-baseline=\"middle\" fill=\"hsla(24, 100%, 9%, 1)\" style=\"font-family:Inter, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, &quot;Liberation Sans&quot;, Helvetica, Arial, system-ui, sans-serif;font-weight:500;font-size:13px;transform:translateY(1px)\">M</text></svg>",
+      "mediaLibrary": {
+        "enabled": false,
+        "__internal": {}
+      },
+      "schema": "6e635018.create-schema.json",
+      "tools": "d57bf8ec.create-tools.json"
+    }
+  ],
+  "studioVersion": "5.13.0"
+}
