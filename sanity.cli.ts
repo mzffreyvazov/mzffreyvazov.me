@@ -1,7 +1,11 @@
-import { loadEnvConfig } from '@next/env'
+import process from 'node:process'
 import { defineCliConfig } from 'sanity/cli'
 
-loadEnvConfig(process.cwd())
+for (const envFile of ['.env', '.env.local']) {
+  try {
+    process.loadEnvFile(envFile)
+  } catch {}
+}
 
 const projectId =
   process.env.SANITY_STUDIO_PROJECT_ID ||
