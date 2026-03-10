@@ -26,9 +26,13 @@ A rich article body path has now been added for Sanity-authored articles, includ
 - Rich Sanity articles can now include inline uploaded images with alt text, captions, and hotspot/crop support.
 - Article rendering now supports both markdown-string articles and rich Sanity Portable Text articles.
 - A shared clickable image/lightbox component now supports both markdown images and Sanity-hosted images.
+- Shared markdown rendering now supports GitHub-flavored markdown tables.
+- Legacy markdown content stored in Sanity now renders tables correctly in the public site.
+- Markdown tables now have dedicated frontend styling and horizontal overflow handling for dense reference content.
 - Sanity image URL handling was added for frontend rendering.
 - The Next app now allows Sanity CDN images in `next/image`.
 - The rich article content path builds successfully in the local app.
+- The main reading column was widened slightly to improve article and table readability.
 - Local Sanity Studio now runs successfully as a standalone workflow via `pnpm studio`.
 - Hosted Sanity Studio has been deployed successfully at `https://mzffreyvazov.sanity.studio/`.
 - Studio environment resolution was fixed for the Vite-based Studio runtime.
@@ -36,6 +40,7 @@ A rich article body path has now been added for Sanity-authored articles, includ
 - One test `article` has been created and published in Sanity.
 - Browser-based publishing from the hosted Studio is working.
 - Sanity webhook revalidation has been configured and is refreshing the deployed Next app.
+- Server-side Sanity content fetching now bypasses the Sanity CDN so newly published content is fresher after revalidation.
 
 ## How the app behaves now
 
@@ -45,6 +50,9 @@ A rich article body path has now been added for Sanity-authored articles, includ
 - Publishing from Sanity works from both the local Studio and the hosted browser Studio.
 - Published Sanity articles now appear in the deployed Next app, including the Thoughts list page after webhook-triggered revalidation.
 - New or migrated Sanity articles can now use the rich body field for structured content and inline images.
+- Legacy Sanity markdown bodies now support standard markdown tables in the public site.
+- The reading layout provides a bit more width for long-form content and dense tables.
+- Newly published Sanity articles should appear on the Thoughts list more reliably after webhook-triggered revalidation.
 - Existing markdown-backed articles still render unchanged.
 - Existing Sanity articles using the legacy plain-text body field still render unchanged.
 
@@ -83,3 +91,5 @@ A rich article body path has now been added for Sanity-authored articles, includ
 - Local Studio is currently the best place to validate the new rich article body workflow before deploying the schema to the hosted Studio.
 - The package cleanup is already done: unused MDX dependencies were removed and Next was pinned explicitly.
 - The current Studio config relies on `SANITY_STUDIO_*` variables, with a browser-safe fallback for the Vite runtime.
+- Server-side Sanity reads now use non-CDN fetching to reduce stale article-list results after publish.
+- The shared markdown renderer now supports GFM table syntax for markdown-backed content, including legacy markdown stored in Sanity.
