@@ -19,8 +19,70 @@ export interface ArticleListItem {
   chinese?: boolean
 }
 
+export interface PortableTextMarkDefinition {
+  _key: string
+  _type: string
+  href?: string
+}
+
+export interface PortableTextSpan {
+  _key: string
+  _type: 'span'
+  text: string
+  marks?: string[]
+}
+
+export interface PortableTextBlock {
+  _key: string
+  _type: 'block'
+  style?: string
+  listItem?: 'bullet' | 'number'
+  level?: number
+  markDefs?: PortableTextMarkDefinition[]
+  children: PortableTextSpan[]
+}
+
+export interface SanityImageMetadata {
+  lqip?: string
+  dimensions?: {
+    width: number
+    height: number
+    aspectRatio: number
+  }
+}
+
+export interface PortableTextImageBlock {
+  _key: string
+  _type: 'image'
+  alt?: string
+  caption?: string
+  asset?: {
+    _type: 'reference'
+    _ref: string
+  }
+  metadata?: SanityImageMetadata
+  crop?: {
+    top?: number
+    bottom?: number
+    left?: number
+    right?: number
+  }
+  hotspot?: {
+    x?: number
+    y?: number
+    height?: number
+    width?: number
+  }
+}
+
+export type PortableTextContent = PortableTextBlock | PortableTextImageBlock
+
+export type ArticleBody =
+  | { kind: 'markdown'; markdown: string }
+  | { kind: 'portableText'; content: PortableTextContent[] }
+
 export interface ArticlePageData extends ArticleListItem {
-  body: string
+  body: ArticleBody
 }
 
 interface SanityArticle {
@@ -32,6 +94,7 @@ interface SanityArticle {
   hidden?: boolean
   chinese?: boolean
   body?: string
+  bodyRich?: PortableTextContent[]
 }
 
 const articlesDirectory = path.join(process.cwd(), 'app', 'thoughts', '_articles')
@@ -64,12 +127,29 @@ function mapSanityArticle(article: SanityArticle): ArticleListItem {
   }
 }
 
+function hasPortableTextContent(content?: PortableTextContent[] | null): content is PortableTextContent[] {
+  return Array.isArray(content) && content.length > 0
+}
+
 function mapSanityArticlePage(article: SanityArticle): ArticlePageData | null {
-  if (!article.body) return null
+  if (hasPortableTextContent(article.bodyRich)) {
+    return {
+      ...mapSanityArticle(article),
+      body: {
+        kind: 'portableText',
+        content: article.bodyRich,
+      },
+    }
+  }
+
+  if (!article.body?.trim()) return null
 
   return {
     ...mapSanityArticle(article),
-    body: article.body,
+    body: {
+      kind: 'markdown',
+      markdown: article.body,
+    },
   }
 }
 
@@ -94,7 +174,10 @@ async function getMarkdownArticleBySlug(slug: string): Promise<ArticlePageData |
       sort: getSortValue(date),
       hidden: parsed.metadata.hidden || false,
       chinese: parsed.metadata.chinese || false,
-      body: parsed.markdownContent,
+      body: {
+        kind: 'markdown',
+        markdown: parsed.markdownContent,
+      },
     }
   } catch {
     return null

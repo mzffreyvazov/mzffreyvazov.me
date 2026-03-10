@@ -13,7 +13,9 @@
   "dependencies": {
     "@heroicons/react": "^2.1.5",
     "@sanity/client": "^7.16.0",
+    "@sanity/image-url": "^1.2.0",
     "@sanity/vision": "^5.13.0",
+    "@portabletext/react": "^4.0.3",
     "@shikijs/rehype": "^3.2.1",
     "@tailwindcss/postcss": "4.0.15",
     "@vercel/analytics": "^1.6.1",

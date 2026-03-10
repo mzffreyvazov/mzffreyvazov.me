@@ -16,7 +16,15 @@ export const ARTICLE_BY_SLUG_QUERY = `*[_type == "article" && slug.current == $s
   tags,
   hidden,
   chinese,
-  body
+  body,
+  bodyRich[]{
+    ...,
+    _type == "image" => {
+      ...,
+      asset,
+      "metadata": asset->metadata
+    }
+  }
 }`
 
 export const ARTICLE_SLUGS_QUERY = `*[_type == "article" && !coalesce(hidden, false)]{

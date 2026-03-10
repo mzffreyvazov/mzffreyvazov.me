@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation'
 import cn from 'clsx'
 import TocFloatingButton from '@/components/toc-floating-button'
 import MarkdownRenderer from '@/components/markdown-renderer'
+import PortableTextRenderer from '@/components/portable-text-renderer'
 import { getAllArticleSlugs, getArticleBySlug } from '@/lib/articles'
 
 // Enable ISR with 1 hour revalidation, but can be overridden by on-demand revalidation
@@ -66,7 +67,11 @@ export default async function Page(props: {
           </div>
         </header>
         
-        <MarkdownRenderer>{article.body}</MarkdownRenderer>
+        {article.body.kind === 'markdown' ? (
+          <MarkdownRenderer>{article.body.markdown}</MarkdownRenderer>
+        ) : (
+          <PortableTextRenderer value={article.body.content} />
+        )}
       </div>
       <TocFloatingButton />
     </div>
