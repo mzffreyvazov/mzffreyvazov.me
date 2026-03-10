@@ -323,7 +323,7 @@ export default function TableOfContents() {
                         'absolute top-1/2 -translate-y-1/2 h-2 w-2 rounded-full border-2 transition-all',
                         isPassedOrActive
                           ? 'border-rurikon-800 bg-rurikon-800'
-                          : 'border-rurikon-200 bg-[#fcfcfc] group-hover:border-rurikon-400'
+                          : 'border-rurikon-200 bg-[var(--background)] group-hover:border-rurikon-400'
                       )}
                       style={{ left: 0 }}
                     />

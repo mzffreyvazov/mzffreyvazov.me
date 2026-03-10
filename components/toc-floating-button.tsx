@@ -106,7 +106,8 @@ export default function TocFloatingButton() {
       {/* Backdrop */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-white/80 backdrop-blur-sm z-40"
+          className="fixed inset-0 z-40 backdrop-blur-sm"
+          style={{ backgroundColor: 'var(--surface-overlay)' }}
           onClick={() => setIsOpen(false)}
         />
       )}
@@ -115,15 +116,24 @@ export default function TocFloatingButton() {
       <div
         className={cn(
           'fixed bottom-20 right-4 z-50 w-64',
-          'rounded-lg border border-rurikon-200 bg-white shadow-lg',
+          'rounded-lg border shadow-lg',
           'transition-all duration-200 ease-out',
           isOpen
             ? 'opacity-100 translate-y-0'
             : 'opacity-0 translate-y-4 pointer-events-none'
         )}
-        style={{ fontFamily: 'var(--sans), system-ui, sans-serif', fontStyle: 'normal' }}
+        style={{
+          fontFamily: 'var(--sans), system-ui, sans-serif',
+          fontStyle: 'normal',
+          backgroundColor: 'var(--surface-primary)',
+          borderColor: 'var(--color-rurikon-border)',
+          boxShadow: '0 18px 42px rgba(0, 0, 0, 0.12)',
+        }}
       >
-        <div className="p-3 border-b border-rurikon-100">
+        <div
+          className="p-3 border-b"
+          style={{ borderColor: 'var(--color-rurikon-border)' }}
+        >
           <span className="text-xs font-semibold uppercase text-rurikon-500 tracking-wide">
             On this page
           </span>
@@ -141,11 +151,24 @@ export default function TocFloatingButton() {
                   'w-full text-left px-3 py-2 rounded-md text-sm not-italic leading-relaxed',
                   'transition-colors duration-150',
                   isActive
-                    ? 'bg-rurikon-50 text-rurikon-500 font-semibold'
-                    : 'text-rurikon-500 font-normal hover:bg-rurikon-50/50 hover:text-rurikon-600'
+                    ? 'text-rurikon-700 font-semibold'
+                    : 'text-rurikon-500 font-normal hover:text-rurikon-600'
                 )}
                 style={{
                   paddingLeft: `${0.75 + (header.level - 1) * 0.5}rem`,
+                  backgroundColor: isActive
+                    ? 'var(--surface-secondary)'
+                    : 'transparent',
+                }}
+                onMouseEnter={(event) => {
+                  if (!isActive) {
+                    event.currentTarget.style.backgroundColor = 'var(--surface-secondary)'
+                  }
+                }}
+                onMouseLeave={(event) => {
+                  if (!isActive) {
+                    event.currentTarget.style.backgroundColor = 'transparent'
+                  }
                 }}
               >
                 {header.text}
@@ -162,11 +185,16 @@ export default function TocFloatingButton() {
           'fixed bottom-4 right-4 z-50',
           'flex items-center justify-center',
           'h-12 w-12 rounded-full',
-          'bg-rurikon-700 text-white',
-          'shadow-lg',
+          'border shadow-lg',
+          'text-rurikon-700',
           'transition-transform duration-200',
           'hover:scale-105 active:scale-95'
         )}
+        style={{
+          backgroundColor: 'var(--surface-primary)',
+          borderColor: 'var(--color-rurikon-border)',
+          boxShadow: '0 12px 32px rgba(0, 0, 0, 0.14)',
+        }}
         aria-label={isOpen ? 'Close table of contents' : 'Open table of contents'}
       >
         {isOpen ? (

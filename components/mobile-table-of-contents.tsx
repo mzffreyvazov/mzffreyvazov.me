@@ -126,7 +126,12 @@ export default function MobileTableOfContents() {
       {/* Floating button - only visible on mobile */}
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 z-40 lg:hidden bg-white border border-rurikon-200 rounded-full w-12 h-12 flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-200 hover:border-rurikon-300"
+        className="fixed bottom-6 right-6 z-40 flex h-12 w-12 items-center justify-center rounded-full border shadow-lg transition-all duration-200 hover:border-rurikon-300 hover:shadow-xl lg:hidden"
+        style={{
+          backgroundColor: 'var(--surface-primary)',
+          borderColor: 'var(--color-rurikon-border)',
+          boxShadow: '0 12px 32px rgba(0, 0, 0, 0.14)',
+        }}
         aria-label="Open table of contents"
       >
         <Bars3Icon className="w-5 h-5 text-rurikon-600" />
@@ -137,7 +142,8 @@ export default function MobileTableOfContents() {
         <>
           {/* Backdrop - separate fixed element */}
           <div 
-            className="fixed inset-0 z-50 lg:hidden bg-black/25"
+            className="fixed inset-0 z-50 lg:hidden"
+            style={{ backgroundColor: 'var(--surface-overlay)' }}
             onClick={() => setIsOpen(false)}
             aria-hidden="true"
           />
@@ -145,17 +151,22 @@ export default function MobileTableOfContents() {
           {/* Slide-up panel */}
           <div 
             className={cn(
-              "fixed bottom-0 left-0 right-0 z-50 lg:hidden bg-white border-t border-rurikon-200 rounded-t-2xl transition-transform duration-300 ease-out transform font-sans",
+              "fixed bottom-0 left-0 right-0 z-50 rounded-t-2xl border-t transition-transform duration-300 ease-out transform font-sans lg:hidden",
               isOpen ? "translate-y-0" : "translate-y-full"
             )}
             style={{ 
               maxHeight: '70vh',
+              backgroundColor: 'var(--surface-primary)',
+              borderColor: 'var(--color-rurikon-border)',
               fontVariationSettings: '"wght" 500, "opsz" 32',
               fontFeatureSettings: '"cpsp" 1, "cv01", "cv03", "cv04", "calt", "ss03", "liga", "ordn"'
             }}
           >
             {/* Header */}
-            <div className="flex items-center justify-between p-4 border-b border-rurikon-100">
+            <div
+              className="flex items-center justify-between p-4 border-b"
+              style={{ borderColor: 'var(--color-rurikon-border)' }}
+            >
               <h3 
                 className="text-base font-bold text-rurikon-800"
                 style={{
@@ -167,7 +178,13 @@ export default function MobileTableOfContents() {
               </h3>
               <button
                 onClick={() => setIsOpen(false)}
-                className="p-1 rounded-full hover:bg-rurikon-50 transition-colors"
+                className="rounded-full p-1 transition-colors"
+                onMouseEnter={(event) => {
+                  event.currentTarget.style.backgroundColor = 'var(--surface-secondary)'
+                }}
+                onMouseLeave={(event) => {
+                  event.currentTarget.style.backgroundColor = 'transparent'
+                }}
                 aria-label="Close table of contents"
               >
                 <XMarkIcon className="w-5 h-5 text-rurikon-500" />
@@ -185,13 +202,15 @@ export default function MobileTableOfContents() {
                         onClick={(e) => handleLinkClick(e, header.id)}
                         className={cn(
                           'block py-2 px-3 rounded-lg text-sm transition-all duration-150 relative',
-                          'hover:bg-rurikon-50',
                           activeId === header.id
-                            ? 'text-rurikon-800 font-bold bg-rurikon-50'
+                            ? 'text-rurikon-800 font-bold'
                             : 'text-rurikon-500 hover:text-rurikon-700 font-semibold'
                         )}
                         style={{
                           paddingLeft: `${0.75 + (header.level - 1) * 0.75}rem`,
+                          backgroundColor: activeId === header.id
+                            ? 'var(--surface-secondary)'
+                            : 'transparent',
                           fontFamily: 'var(--sans), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif',
                           fontFeatureSettings: '"cpsp" 1, "cv01", "cv03", "cv04", "calt", "ss03", "liga", "ordn"',
                           fontVariationSettings: activeId === header.id 
@@ -200,6 +219,16 @@ export default function MobileTableOfContents() {
                           fontOpticalSizing: 'auto',
                           letterSpacing: '0.0085em',
                           wordSpacing: '-0.04em'
+                        }}
+                        onMouseEnter={(event) => {
+                          if (activeId !== header.id) {
+                            event.currentTarget.style.backgroundColor = 'var(--surface-secondary)'
+                          }
+                        }}
+                        onMouseLeave={(event) => {
+                          if (activeId !== header.id) {
+                            event.currentTarget.style.backgroundColor = 'transparent'
+                          }
                         }}
                       >
                         {activeId === header.id && (
