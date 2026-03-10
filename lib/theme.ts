@@ -8,8 +8,8 @@ export const DARK_PALETTE_OPTIONS: Array<{
   value: DarkPalette
   label: string
 }> = [
-  { value: 'olive-ash-dim-soft', label: 'olive ash dim soft' },
-  { value: 'obsidian-typewriter', label: 'obsidian typewriter' },
+  { value: 'olive-ash-dim-soft', label: 'olive' },
+  { value: 'obsidian-typewriter', label: 'typewriter' },
 ]
 
 export const THEME_STORAGE_KEY = 'mz-theme'
