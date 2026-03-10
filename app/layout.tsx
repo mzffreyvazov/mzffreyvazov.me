@@ -6,6 +6,7 @@ import 'katex/dist/katex.min.css'
 import { Analytics } from "@vercel/analytics/next"
 
 import Navbar from '@/components/navbar'
+import { getThemeBootstrapScript } from '@/lib/theme'
 import ViewTransition from '@/components/view-transition'
 import './globals.css'
 
@@ -37,7 +38,7 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   maximumScale: 1,
-  colorScheme: 'only light',
+  colorScheme: 'light dark',
   themeColor: '#fcfcfc',
 }
 
@@ -47,8 +48,18 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang='en' className='overflow-x-hidden touch-manipulation'>
+    <html
+      lang='en'
+      className='overflow-x-hidden touch-manipulation'
+      data-theme='light'
+      data-dark-palette='olive-ash-dim-soft'
+      suppressHydrationWarning
+    >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: getThemeBootstrapScript() }} />
+      </head>
       <body
+        suppressHydrationWarning
         className={cn(
           sans.variable,
           serif.variable,
