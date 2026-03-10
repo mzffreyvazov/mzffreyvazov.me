@@ -4,6 +4,7 @@
 import React, { useState, useCallback, useEffect } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkDirective from 'remark-directive'
+import remarkGfm from 'remark-gfm'
 import { visit } from 'unist-util-visit'
 import { BlockSideTitle } from '@/components/block-sidetitle'
 import { ClickableImage } from '@/components/clickable-image'
@@ -289,6 +290,20 @@ export default function MarkdownRenderer({ children }: MarkdownRendererProps) {
         {...props}
       />
     ),
+    table: (props: any) => (
+      <div className='mt-6 overflow-x-auto'>
+        <table className='min-w-full border-collapse text-left text-sm leading-relaxed text-rurikon-500' {...props} />
+      </div>
+    ),
+    thead: (props: any) => <thead className='border-b border-rurikon-200 text-rurikon-700' {...props} />,
+    tbody: (props: any) => <tbody className='divide-y divide-rurikon-100' {...props} />,
+    tr: (props: any) => <tr className='align-top' {...props} />,
+    th: (props: any) => (
+      <th className='px-3 py-2 font-semibold first:pl-0 last:pr-0' {...props} />
+    ),
+    td: (props: any) => (
+      <td className='px-3 py-2 first:pl-0 last:pr-0 [&_p]:mt-0 [&_code]:whitespace-nowrap' {...props} />
+    ),
     pre: ({ children, ...props }: any) => {
       // Extract code content and language from children
       let codeContent = ''
@@ -396,7 +411,7 @@ export default function MarkdownRenderer({ children }: MarkdownRendererProps) {
 
   return (
     <ReactMarkdown
-      remarkPlugins={[remarkDirective, remarkDirectivePlugin]}
+      remarkPlugins={[remarkGfm, remarkDirective, remarkDirectivePlugin]}
       components={components as any}
     >
       {children}
