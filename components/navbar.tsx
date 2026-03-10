@@ -33,15 +33,15 @@ function Item(props: React.ComponentProps<typeof Link>) {
 export default function Navbar() {
   return (
     <nav className='mobile:mr-6 sm:mr-10 md:mr-14 w-full mobile:w-16'>
-      <ul className='lowercase text-right mobile:sticky top-6 sm:top-10 md:top-14 mb-6 mobile:mb-0 flex flex-wrap gap-x-2 gap-y-1 justify-end mobile:min-h-[calc(100vh-3rem)] mobile:flex-col mobile:justify-start mobile:pb-6 sm:pb-10 md:pb-14'>
+      <ul className='lowercase text-right mobile:sticky top-6 sm:top-10 md:top-14 mb-6 mobile:mb-0 flex flex-wrap gap-x-2 gap-y-1 justify-end mobile:block'>
         <Item href='/'>About</Item>
         <Item href='/thoughts'>Thoughts</Item>
         {/* <Item href='/visuals'>Visuals</Item> */}
         <Item href='/projects'>Projects</Item>
-        {/* <Item href='/guestbook'>Guestbook</Item> */}
-        <li className='-mx-2 flex flex-wrap justify-end mobile:mt-auto mobile:block mobile:pt-6'>
+        <li className='-mx-2 text-rurikon-300 hover:text-rurikon-600 transition-colors hover:transform-none'>
           <ThemeToggle />
         </li>
+        {/* <Item href='/guestbook'>Guestbook</Item> */}
       </ul>
     </nav>
   )

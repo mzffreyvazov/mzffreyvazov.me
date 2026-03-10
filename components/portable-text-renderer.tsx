@@ -93,7 +93,7 @@ const components: PortableTextComponents = {
       )
     },
     code: ({ children }) => (
-      <code className="inline bg-rurikon-50 px-1.5 py-0.5 rounded text-sm font-mono text-rurikon-600 border border-rurikon-100">
+      <code className="inline rounded border border-[var(--code-inline-border)] bg-[var(--code-inline-background)] px-1.5 py-0.5 text-sm font-mono text-[var(--code-inline-foreground)]">
         {children}
       </code>
     ),

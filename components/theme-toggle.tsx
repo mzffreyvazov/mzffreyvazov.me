@@ -16,6 +16,20 @@ import {
   type ThemeMode,
 } from '@/lib/theme'
 
+const THEME_SEQUENCE: Array<{ theme: ThemeMode; palette: DarkPalette; label: string }> = [
+  { theme: 'light', palette: DEFAULT_DARK_PALETTE, label: 'light' },
+  {
+    theme: 'dark',
+    palette: 'olive-ash-dim-soft',
+    label: DARK_PALETTE_OPTIONS.find((option) => option.value === 'olive-ash-dim-soft')?.label ?? 'olive',
+  },
+  {
+    theme: 'dark',
+    palette: 'obsidian-typewriter',
+    label: DARK_PALETTE_OPTIONS.find((option) => option.value === 'obsidian-typewriter')?.label ?? 'typewriter',
+  },
+]
+
 function applyTheme(theme: ThemeMode, palette?: DarkPalette) {
   const root = document.documentElement
   const datasetPalette = root.dataset.darkPalette || null
@@ -59,52 +73,37 @@ export default function ThemeToggle() {
     setMounted(true)
   }, [])
 
-  return (
-    <>
-      <button
-        type='button'
-        onClick={() => {
-          setTheme('light')
-          applyTheme('light', palette)
-        }}
-        className={cn(
-          theme === 'light'
-            ? 'text-rurikon-800'
-            : 'text-rurikon-300 hover:text-rurikon-600',
-          'inline-block px-2 transition-colors hover:transform-none'
-        )}
-        title='Switch to light mode'
-        aria-label='Switch to light mode'
-        style={{ opacity: mounted ? 1 : 0 }}
-      >
-        light
-      </button>
-      {DARK_PALETTE_OPTIONS.map((option) => {
-        const isActive = theme === 'dark' && palette === option.value
+  const currentIndex = THEME_SEQUENCE.findIndex((option) => {
+    if (theme === 'light') {
+      return option.theme === 'light'
+    }
 
-        return (
-          <button
-            key={option.value}
-            type='button'
-            onClick={() => {
-              setTheme('dark')
-              setPalette(option.value)
-              applyTheme('dark', option.value)
-            }}
-            className={cn(
-              isActive
-                ? 'text-rurikon-800'
-                : 'text-rurikon-300 hover:text-rurikon-600',
-              'inline-block px-2 transition-colors hover:transform-none'
-            )}
-            title={`Switch to ${option.label}`}
-            aria-label={`Switch to ${option.label}`}
-            style={{ opacity: mounted ? 1 : 0 }}
-          >
-            {option.label}
-          </button>
-        )
-      })}
-    </>
+    return option.theme === 'dark' && option.palette === palette
+  })
+
+  const activeIndex = currentIndex === -1 ? 0 : currentIndex
+  const activeLabel = THEME_SEQUENCE[activeIndex].label
+
+  return (
+    <button
+      type='button'
+      onClick={() => {
+        const nextIndex = (activeIndex + 1) % THEME_SEQUENCE.length
+        const nextTheme = THEME_SEQUENCE[nextIndex]
+
+        setTheme(nextTheme.theme)
+        setPalette(nextTheme.palette)
+        applyTheme(nextTheme.theme, nextTheme.palette)
+      }}
+      className={cn(
+        mounted ? 'text-rurikon-800' : 'text-rurikon-300',
+        'inline-block w-full px-2 text-right transition-colors hover:text-rurikon-600 hover:transform-none'
+      )}
+      title={`Current theme: ${activeLabel}. Click to cycle themes.`}
+      aria-label={`Current theme: ${activeLabel}. Click to cycle themes.`}
+      style={{ opacity: mounted ? 1 : 0 }}
+    >
+      {activeLabel}
+    </button>
   )
 }

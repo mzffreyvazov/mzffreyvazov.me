@@ -48,13 +48,32 @@ const CopyButton = ({ code }: { code: string }) => {
 // Syntax highlighted code block component
 const HighlightedCodeBlock = ({ code, language }: { code: string, language: string }) => {
   const [highlightedHtml, setHighlightedHtml] = useState<string | null>(null)
+  const [shikiTheme, setShikiTheme] = useState<'github-light' | 'github-dark'>('github-light')
+
+  useEffect(() => {
+    const root = document.documentElement
+
+    const syncTheme = () => {
+      setShikiTheme(root.dataset.theme === 'dark' ? 'github-dark' : 'github-light')
+    }
+
+    syncTheme()
+
+    const observer = new MutationObserver(syncTheme)
+    observer.observe(root, {
+      attributes: true,
+      attributeFilter: ['data-theme'],
+    })
+
+    return () => observer.disconnect()
+  }, [])
   
   useEffect(() => {
     const highlight = async () => {
       try {
         const html = await codeToHtml(code, {
           lang: language || 'text',
-          theme: 'github-light',
+          theme: shikiTheme,
         })
         setHighlightedHtml(html)
       } catch (err) {
@@ -62,7 +81,7 @@ const HighlightedCodeBlock = ({ code, language }: { code: string, language: stri
         try {
           const html = await codeToHtml(code, {
             lang: 'text',
-            theme: 'github-light',
+            theme: shikiTheme,
           })
           setHighlightedHtml(html)
         } catch {
@@ -71,11 +90,11 @@ const HighlightedCodeBlock = ({ code, language }: { code: string, language: stri
       }
     }
     highlight()
-  }, [code, language])
+  }, [code, language, shikiTheme])
   
   return (
-    <div className="mt-6 rounded-lg border border-rurikon-100 overflow-hidden">
-      <div className="bg-rurikon-50 px-4 py-1.5 border-b border-rurikon-100 flex items-center justify-between">
+    <div className="mt-6 overflow-hidden rounded-lg border border-[var(--code-block-border)] bg-[var(--code-block-shell)]">
+      <div className="flex items-center justify-between border-b border-[var(--code-block-border)] bg-[var(--code-block-header-background)] px-4 py-1.5">
         <span className="text-xs font-medium text-rurikon-400 uppercase tracking-wide">
           {language || 'code'}
         </span>
@@ -83,11 +102,11 @@ const HighlightedCodeBlock = ({ code, language }: { code: string, language: stri
       </div>
       {highlightedHtml ? (
         <div 
-          className="shiki-wrapper overflow-x-auto text-sm leading-relaxed [&_pre]:p-4 [&_pre]:m-0 [&_pre]:bg-[#fafafa] [&_code]:font-mono"
+          className="shiki-wrapper overflow-x-auto text-sm leading-relaxed [&_pre]:m-0 [&_pre]:p-4 [&_code]:font-mono"
           dangerouslySetInnerHTML={{ __html: highlightedHtml }}
         />
       ) : (
-        <pre className="p-4 overflow-x-auto text-sm leading-relaxed bg-[#fafafa]">
+        <pre className="overflow-x-auto bg-[var(--code-block-background)] p-4 text-sm leading-relaxed text-[var(--shiki-foreground)]">
           <code className="font-mono block">{code}</code>
         </pre>
       )}
@@ -330,14 +349,14 @@ export default function MarkdownRenderer({ children }: MarkdownRendererProps) {
       // Fallback for code blocks without language
       if (codeContent) {
         return (
-          <div className="mt-6 rounded-lg border border-rurikon-100 overflow-hidden">
-            <div className="bg-rurikon-50 px-4 py-1.5 border-b border-rurikon-100 flex items-center justify-between">
+          <div className="mt-6 overflow-hidden rounded-lg border border-[var(--code-block-border)] bg-[var(--code-block-shell)]">
+            <div className="flex items-center justify-between border-b border-[var(--code-block-border)] bg-[var(--code-block-header-background)] px-4 py-1.5">
               <span className="text-xs font-medium text-rurikon-400 uppercase tracking-wide">
                 code
               </span>
               <CopyButton code={codeContent} />
             </div>
-            <pre className="p-4 overflow-x-auto text-sm leading-relaxed bg-[#fafafa]" {...props}>
+            <pre className="overflow-x-auto bg-[var(--code-block-background)] p-4 text-sm leading-relaxed text-[var(--shiki-foreground)]" {...props}>
               {children}
             </pre>
           </div>
@@ -364,7 +383,7 @@ export default function MarkdownRenderer({ children }: MarkdownRendererProps) {
       // This is inline code
       return (
         <code 
-          className='inline bg-rurikon-50 px-1.5 py-0.5 rounded text-sm font-mono text-rurikon-600 border border-rurikon-100' 
+          className='inline rounded border border-[var(--code-inline-border)] bg-[var(--code-inline-background)] px-1.5 py-0.5 text-sm font-mono text-[var(--code-inline-foreground)]' 
           {...props}
         >
           {children}
